@@ -114,7 +114,7 @@
         .btn-xs:hover { background: var(--accent-sage-light); color: var(--accent-sage); border-color: var(--accent-sage); }
 
         /* Main Workspace */
-        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 32px 32px; position: relative; display: flex; flex-direction: column; min-width: 0; }
+        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 20px 32px; position: relative; display: flex; flex-direction: column; min-width: 0; }
         
         /* Global Sticky Top Bar with Search */
         .global-top-bar { position: sticky; top: 0; z-index: 100; background: rgba(248, 246, 240, 0.92); backdrop-filter: blur(8px); padding: 6px 0 16px 0; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; min-width: 0; }
@@ -132,7 +132,7 @@
         .nav-toggle:active { background: var(--accent-sage-light); }
         .nav-backdrop { display: none; }
 
-        .page { display: none; flex-direction: column; gap: 20px; max-width: 1100px; margin: 0 auto; width: 100%; min-width: 0; overflow-x: hidden; }
+        .page { display: none; flex-direction: column; gap: 20px; max-width: none; margin: 0; width: 100%; min-width: 0; overflow-x: hidden; }
         .page.active { display: flex; animation: fadeIn 0.25s ease; }
         #page-health .health-timer-num { font-size: 48px; font-weight: 900; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; }
         @media (max-width: 760px) {
