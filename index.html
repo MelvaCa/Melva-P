@@ -1619,6 +1619,37 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">已登录时显示账号名，「退出登录」可清空会话；未登录时「退出登录」按钮置灰提示。</div>
             </div>
 
+            <!-- 用户与密码管理（仅管理员已登录可见） -->
+            <div class="card" id="userMgmtCard" style="display:none;">
+                <div class="card-title" style="margin-bottom: 14px;">👥 用户与密码管理 <span style="font-size:11px;color:var(--text-muted);font-weight:400;">（仅管理员可见）</span></div>
+                <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">登录管理员账号后，可在此创建其他用户密码，分享给家人/同伴使用（密码仅保存在本机浏览器，属客户端存储）。</div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
+                    <div class="login-field" style="margin:0;">
+                        <label style="font-size:11.5px;font-weight:600;">新用户名</label>
+                        <input type="text" id="umNewUser" placeholder="例如 family01" autocomplete="off">
+                    </div>
+                    <div></div>
+                    <div class="login-field" style="margin:0;">
+                        <label style="font-size:11.5px;font-weight:600;">设置密码（至少 6 位）</label>
+                        <input type="password" id="umNewPass" placeholder="新用户密码" autocomplete="new-password">
+                    </div>
+                    <div class="login-field" style="margin:0;">
+                        <label style="font-size:11.5px;font-weight:600;">确认密码</label>
+                        <input type="password" id="umNewPass2" placeholder="再次输入" autocomplete="new-password">
+                    </div>
+                </div>
+                <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
+                    <button class="btn btn-primary" type="button" id="umAddBtn">➕ 创建用户密码</button>
+                    <span id="umMsg" style="font-size:12px;color:var(--text-muted);"></span>
+                </div>
+
+                <div style="margin-top:14px; border-top:1px solid var(--border,#eee); padding-top:10px;">
+                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-weight:600;">已创建的用户</div>
+                    <div id="umList"></div>
+                </div>
+            </div>
+
             <!-- 主题切换 -->
             <div class="card">
                 <div class="card-title" style="margin-bottom: 14px;">🎨 界面主题切换</div>
