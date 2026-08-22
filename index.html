@@ -86,7 +86,8 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; font-size: 13.5px; }
 
-        .app-container { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+        html, body { min-width: 0; }
+        .app-container { display: flex; width: 100%; height: 100vh; overflow: hidden; min-width: 0; }
         
         /* Sidebar */
         .sidebar { width: 250px; background: var(--sidebar-bg); border-right: 1px solid var(--card-border); display: flex; flex-direction: column; justify-content: space-between; padding: 18px 12px; flex-shrink: 0; z-index: 10; }
@@ -113,11 +114,11 @@
         .btn-xs:hover { background: var(--accent-sage-light); color: var(--accent-sage); border-color: var(--accent-sage); }
 
         /* Main Workspace */
-        .main-content { flex: 1; overflow-y: auto; padding: 20px 32px 32px; position: relative; display: flex; flex-direction: column; }
+        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 32px 32px; position: relative; display: flex; flex-direction: column; min-width: 0; }
         
         /* Global Sticky Top Bar with Search */
-        .global-top-bar { position: sticky; top: 0; z-index: 100; background: rgba(248, 246, 240, 0.92); backdrop-filter: blur(8px); padding: 6px 0 16px 0; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; }
-        .search-box-wrapper { flex: 1; position: relative; }
+        .global-top-bar { position: sticky; top: 0; z-index: 100; background: rgba(248, 246, 240, 0.92); backdrop-filter: blur(8px); padding: 6px 0 16px 0; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; min-width: 0; }
+        .search-box-wrapper { flex: 1; position: relative; min-width: 0; }
         .search-input { width: 100%; padding: 10px 16px 10px 38px; border-radius: 30px; border: 1.5px solid var(--card-border); background: #ffffff; font-size: 13px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: var(--transition); }
         .search-input:focus { border-color: var(--accent-sage); outline: none; box-shadow: 0 4px 14px rgba(102, 140, 113, 0.15); }
         .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
@@ -131,7 +132,7 @@
         .nav-toggle:active { background: var(--accent-sage-light); }
         .nav-backdrop { display: none; }
 
-        .page { display: none; flex-direction: column; gap: 20px; max-width: 1100px; margin: 0 auto; width: 100%; }
+        .page { display: none; flex-direction: column; gap: 20px; max-width: 1100px; margin: 0 auto; width: 100%; min-width: 0; overflow-x: hidden; }
         .page.active { display: flex; animation: fadeIn 0.25s ease; }
         #page-health .health-timer-num { font-size: 48px; font-weight: 900; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; }
         @media (max-width: 760px) {
@@ -144,7 +145,12 @@
 
         /* UI Cards */
         .card { background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--card-border); padding: 20px; box-shadow: var(--shadow); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.page-head { padding: 16px 20px; box-shadow: var(--shadow); }
+.page-head .page-head-title { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+.page-head .page-head-sub { font-size: 11.5px; color: var(--text-muted); }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
+        .card-header .card-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+        .card-header .btn { white-space: nowrap; flex-shrink: 0; }
         .card-title { font-size: 15px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
 
         /* Sticky Today Pending Bar */
@@ -181,6 +187,7 @@
         .task-time.task-done { color: var(--accent-sage); font-weight: 600; }
         .task-created { font-size: 10.5px; color: var(--text-muted); white-space: nowrap; }
         .task-ops { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+        .task-ops button { white-space: nowrap; }
         /* 紧急优先级醒目标识 */
         .task-item.task-urgent { border-color: var(--danger); background: var(--danger-bg, #fff3f2); box-shadow: inset 3px 0 0 var(--danger); }
         .task-urgent-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; white-space: nowrap; background: var(--danger); color: #fff; letter-spacing: .3px; }
@@ -445,7 +452,8 @@
             .search-input { padding: 9px 14px 9px 34px; font-size: 13px; }
 
             /* 网格单列化 */
-            .grid-5 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .grid-5 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+            .grid-5 > *:nth-child(5) { grid-column: 1 / -1; justify-self: center; width: min(100%, 140px); }
             .grid-2 { grid-template-columns: 1fr; gap: 12px; }
             .card { padding: 16px; }
 
@@ -766,7 +774,7 @@
             </div>
 
             <div class="card">
-                <div class="card-title" style="margin-bottom:14px;">🌅 每日时段计划</div>
+                <div class="card-header"><div class="card-title">🌅 每日时段计划</div></div>
                 <div class="grid-2" id="dailyTimeSlotsContainer"></div>
             </div>
 
@@ -1144,8 +1152,8 @@
         <!-- 11. 📜 每日阅读（国学经典 / 历史名著） -->
         <section id="page-reading" class="page">
             <div class="card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
-                    <div class="card-title" style="margin:0;">📜 每日阅读 · 站在历史的肩膀上前行</div>
+                <div class="card-header">
+                    <div class="card-title">📜 每日阅读 · 站在历史的肩膀上前行</div>
                     <button class="btn btn-secondary" type="button" onclick="refreshDailyReading()">🔄 换一篇推荐</button>
                 </div>
 
@@ -1244,7 +1252,7 @@
         <!-- 9.5 👥 团队管理 -->
         <section id="page-team" class="page">
             <div class="card">
-                <div class="card-title" style="margin-bottom:14px;">👥 团队管理 · 人员画像与周会记录</div>
+                <div class="card-header"><div class="card-title">👥 团队管理 · 人员画像与周会记录</div></div>
 
                 <!-- 人员画像录入 -->
                 <div style="background:var(--bg-main); padding:14px; border-radius:var(--radius-md); border:1px solid var(--card-border);">
@@ -1480,7 +1488,7 @@
         <!-- 10. ⚙️ 设置与数据备份 -->
         <section id="page-settings" class="page">
             <div class="card">
-                <div class="card-title" style="margin-bottom: 14px;">💾 数据自动保存与本地备份保障</div>
+                <div class="card-header"><div class="card-title">💾 数据自动保存与本地备份保障</div></div>
                 <div style="font-size:12.5px; line-height:1.7; color:var(--text-secondary); margin-bottom:14px;">
                     ✅ <b>实时防丢机制：</b> 你的所有修改（任务、习惯、日记、复盘、话术、英语学习笔记等）均会在操作发生瞬间<b>自动写入本地存储（LocalStorage）</b>。<br>
                     ✅ <b>后台自动快照：</b> 系统每隔 10 秒自动更新云端/本地镜像快照，即使突然关闭浏览器或刷新页面，数据也不会丢失。<br>
@@ -1494,7 +1502,7 @@
             </div>
 
             <div class="card">
-                <div class="card-title" style="margin-bottom: 14px;">⚙️ AI 接口配置（关联主流公开引擎）</div>
+                <div class="card-header"><div class="card-title">⚙️ AI 接口配置（关联主流公开引擎）</div></div>
                 <div class="grid-2">
                     <div>
                         <label style="font-size: 11.5px; font-weight: 600;">AI 服务引擎</label>
@@ -1560,7 +1568,7 @@
             </div>
 
             <div class="card">
-                <div class="card-title" style="margin-bottom: 12px;">☁️ 云端实时同步 (Supabase)</div>
+                <div class="card-header"><div class="card-title">☁️ 云端实时同步 (Supabase)</div></div>
                 <div style="font-size:12.5px; line-height:1.7; color:var(--text-secondary); margin-bottom:14px;">
                     开启后，所有数据实时同步到 Supabase 云端。<b>手机端与电脑端填写相同的「同步码」</b>即可双向实时同步；离线时数据自动保存在本机，恢复网络后自动续传。
                 </div>
@@ -1610,7 +1618,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
             <!-- 账户登录 / 退出（统一在设置栏，账号与退出按钮常驻显示） -->
             <div class="card">
-                <div class="card-title" style="margin-bottom: 14px;">🔐 账户登录与退出</div>
+                <div class="card-header"><div class="card-title">🔐 账户登录与退出</div></div>
                 <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:10px;">当前账户：<b id="settingsAccName">未登录</b></div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <button class="btn btn-primary" type="button" id="settingsAccountLoginBtn" onclick="lifeOSShowLogin()">🔓 登录账户</button>
@@ -1621,7 +1629,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
             <!-- 用户与密码管理（仅管理员已登录可见） -->
             <div class="card" id="userMgmtCard" style="display:none;">
-                <div class="card-title" style="margin-bottom: 14px;">👥 用户与密码管理 <span style="font-size:11px;color:var(--text-muted);font-weight:400;">（仅管理员可见）</span></div>
+                <div class="card-header"><div class="card-title">👥 用户与密码管理 <span style="font-size:11px;color:var(--text-muted);font-weight:400;">（仅管理员可见）</span></div></div>
                 <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">登录管理员账号后，可在此创建其他用户密码，分享给家人/同伴使用（密码仅保存在本机浏览器，属客户端存储）。</div>
 
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
@@ -1652,7 +1660,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
             <!-- 主题切换 -->
             <div class="card">
-                <div class="card-title" style="margin-bottom: 14px;">🎨 界面主题切换</div>
+                <div class="card-header"><div class="card-title">🎨 界面主题切换</div></div>
                 <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">选择界面配色模式，设置会即时生效并自动记忆。</div>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button class="theme-btn" data-theme="light" onclick="applyTheme('light')">☀️ 白天模式</button>
@@ -1727,13 +1735,21 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
         <!-- 9.6 💪 健康管理（套用每日计划页面 UI） -->
         <section id="page-health" class="page">
+            <!-- 页面标题抬头（与其它页面一致的版头） -->
+            <div class="card page-head" style="background: linear-gradient(135deg, #fefdf8 0%, #eef5f0 100%); border-left: 6px solid var(--accent-sage);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
+                    <div style="font-size:20px; font-weight:800; color:var(--text-primary);">💪 健康管理</div>
+                    <span style="font-size:11.5px; color:var(--text-muted);">记录运动、体重与身体状态，认真生活✨</span>
+                </div>
+            </div>
+
             <!-- 顶部：今日健康待办概览（仿每日计划「今天要处理」sticky 卡） -->
             <div class="sticky-pending-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
                     <div style="font-size:15px; font-weight:800; color:var(--text-primary);">💪 今日健康待办</div>
                     <div style="display:flex; gap:8px; align-items:center;">
                         <span style="font-size:10.5px; color:var(--text-muted);">完成三项，健康一整天 🌿</span>
-                        <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去运动打卡</button>
+                        <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去打卡</button>
                     </div>
                 </div>
                 <div id="healthTodayOverview" class="task-list"></div>
@@ -1797,7 +1813,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">🏋️ 运动打卡 · 练背 / 腿 / 腹 / 核心</div>
-                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 今日运动打卡</button>
+                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去打卡</button>
                 </div>
                 <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">打卡子项为「动作 + 次数」，可与上方计时/计数联动：开始训练后，完成的组数会自动回写到本表。一天记一次。</div>
                 <div id="workoutTodayBox"></div>
@@ -1832,17 +1848,16 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
         <!-- 9.7 🏃 运动健身（参考首页排版 · 复制健康管理卡片内容 + 新增喝水/睡眠记录） -->
         <section id="page-fitness" class="page">
-            <!-- 顶部欢迎卡（仿首页渐变卡） -->
-            <div class="card" style="background: linear-gradient(135deg, #fefdf8 0%, #eef5f0 100%); border-left: 6px solid var(--accent-sage);">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px;">
+            <!-- 页面标题抬头（与其它页面一致的版头） -->
+            <div class="card page-head" style="background: linear-gradient(135deg, #fefdf8 0%, #eef5f0 100%); border-left: 6px solid var(--accent-sage);">
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">
                     <div>
-                        <div style="font-size: 20px; font-weight: 800;">🏃 运动健身</div>
-                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" id="fitnessDate"></div>
+                        <div class="page-head-title">🏃 运动健身</div>
+                        <div class="page-head-sub" id="fitnessDate"></div>
                     </div>
-                    <button class="btn btn-secondary" style="font-size:11px; padding:5px 10px; white-space:nowrap;" onclick="openWorkoutLog()">＋ 今日运动打卡</button>
+                    <button class="btn btn-secondary" style="font-size:11px; padding:5px 10px;  white-space:nowrap;" onclick="openWorkoutLog()">＋ 去打卡</button>
                 </div>
                 <div style="font-size: 13px; color: var(--text-secondary); margin-top: 10px; line-height:1.7;" id="fitnessQuote">今天动一动，身体更轻松✨ 记得喝水、好好睡觉。</div>
-                <div style="font-size:11px; color:var(--accent-sage); margin-top:8px; font-weight:600;">💪 今日运动健身</div>
             </div>
 
             <!-- 圆环指标（仿首页 grid-5 ring-card） -->
@@ -1878,7 +1893,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">🎯 今日健康重点</div>
-                    <button class="btn btn-primary" onclick="openWorkoutLog()">+ 去运动打卡</button>
+                    <button class="btn btn-primary" onclick="openWorkoutLog()">+ 去打卡</button>
                 </div>
                 <div class="task-list" id="fitnessTodayList"></div>
             </div>
@@ -1928,7 +1943,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">🏋️ 运动打卡 · 练背 / 腿 / 腹 / 核心</div>
-                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 今日运动打卡</button>
+                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去打卡</button>
                 </div>
                 <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">打卡子项为「动作 + 次数」，可与上方计时/计数联动。一天记一次。</div>
                 <div id="fitWorkoutTodayBox"></div>
@@ -1936,17 +1951,17 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div style="margin-top:16px;">
                     <div style="font-weight:700; font-size:13.5px; margin-bottom:8px; color:var(--accent-sage);">📚 动作库（可增删改 · 可附图片/链接）</div>
                     <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('sleep')">🌙 睡前</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('yoga')">💪 瑜伽</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('yogaflow')">🧘 体式</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('stretch')">🤸 拉伸</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('baduanjin')">🇨🇳 八段锦</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('taiji')">🥋 太极</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('burn')">🔥 燃脂</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('back')">背</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('legs')">腿</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('abs')">腹</button>
-                        <button class="btn btn-secondary" onclick="renderExerciseLib('core')">核心</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('sleep')">🌙 睡前</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('yoga')">💪 瑜伽</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('yogaflow')">🧘 体式</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('stretch')">🤸 拉伸</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('baduanjin')">🇨🇳 八段锦</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('taiji')">🥋 太极</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('burn')">🔥 燃脂</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('back')">背</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('legs')">腿</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('abs')">腹</button>
+                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('core')">核心</button>
                     </div>
                     <div id="fitExerciseLibBox"></div>
                 </div>
@@ -2034,7 +2049,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         <!-- 健康管理：今日运动打卡弹窗 -->
         <div class="modal-overlay" id="workoutLogModal" style="display:none;">
             <div class="modal-card" style="max-width:520px; max-height:88vh; overflow:auto;">
-                <div style="font-size:16px; font-weight:700; margin-bottom:6px;">＋ 今日运动打卡</div>
+                <div style="font-size:16px; font-weight:700; margin-bottom:6px;">＋ 去打卡</div>
                 <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px;">勾选练到的部位，并填写每个动作的完成次数；若用上方计时器训练，组数会自动同步到此。</div>
                 <div style="display:flex; gap:10px; align-items:flex-end; margin-bottom:10px;">
                     <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="workoutLogDate" style="width:140px;"></div>
@@ -2938,7 +2953,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         if (tbox) {
             const log = (state.health.workoutLogs || []).find(l => l.date === today);
             if (!log) {
-                tbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 今日运动打卡」。</div>`;
+                tbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 去打卡」。</div>`;
             } else {
                 const rows = (log.items || []).map(it => `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--card-border);">
                     <span style="font-size:12.5px;">${escapeHtml(it.part)} · ${escapeHtml(it.name)}</span>
@@ -3091,7 +3106,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         // —— 今日运动打卡 ——
         const ftbox = document.getElementById('fitWorkoutTodayBox');
         if (ftbox) {
-            if (!todayLog) ftbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 今日运动打卡」。</div>`;
+            if (!todayLog) ftbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 去打卡」。</div>`;
             else {
                 const rows = (todayLog.items || []).map(it => `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--card-border);">
                     <span style="font-size:12.5px;">${escapeHtml(it.part)} · ${escapeHtml(it.name)}</span>
