@@ -1667,71 +1667,8 @@ alter publication supabase_realtime add table life_os_sync;</div>
             </div>
         </section>
 
-    </main>
-</div>
-
-<!-- Modal Dialog: 创建/新增计划任务 -->
-<div class="modal-overlay" id="taskModal" style="display:none;">
-    <div class="modal-card">
-        <div style="font-size:16px; font-weight:700;" id="taskModalTitle">✨ 新增计划 / 任务</div>
-        <div>
-            <label style="font-size:11.5px; font-weight:600;">事项名称</label>
-            <input type="text" id="modalTaskTitle" placeholder="例如：完成亚马逊产品详情页优化...">
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div>
-                <label style="font-size:11.5px; font-weight:600;">计划日期</label>
-                <input type="date" id="modalTaskDate">
-            </div>
-            <div>
-                <label style="font-size:11.5px; font-weight:600;">目标完成时间</label>
-                <input type="time" id="modalTaskTargetTime">
-            </div>
-        </div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-            <div>
-                <label style="font-size:11.5px; font-weight:600;">所属时段</label>
-                <select id="modalTaskSlot">
-                    <option value="晨间">🌅 晨间</option>
-                    <option value="上午">☀️ 上午</option>
-                    <option value="下午">🌤️ 下午</option>
-                    <option value="晚上">🌙 晚上</option>
-                    <option value="复盘">🔍 复盘</option>
-                </select>
-            </div>
-            <div>
-                <label style="font-size:11.5px; font-weight:600;">象限紧急度</label>
-                <select id="modalTaskQuadrant">
-                    <option value="q1">🔴 重要且紧急</option>
-                    <option value="q2">🟡 重要不紧急</option>
-                    <option value="q3">🔵 紧急不重要</option>
-                    <option value="q4">⚪ 不重要不紧急</option>
-                </select>
-            </div>
-        </div>
-        <div>
-            <label style="font-size:11.5px; font-weight:600;">类型分类</label>
-            <select id="modalTaskType" onchange="toggleStudyCatField()">
-                <option value="task">💼 普通日常任务</option>
-                <option value="study">📚 专属学习任务</option>
-            </select>
-        </div>
-        <div id="modalStudyCatWrap" style="display:none;">
-            <label style="font-size:11.5px; font-weight:600;">学习任务分类</label>
-            <div style="display:flex; gap:8px; align-items:center;">
-                <select id="modalTaskCategory" style="flex:1;"></select>
-                <button type="button" class="btn btn-secondary" style="font-size:11px; padding:4px 8px;" onclick="openStudyCatModal('manage')">⚙ 管理</button>
-            </div>
-        </div>
-        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
-            <button class="btn btn-secondary" onclick="closeTaskModal()">取消</button>
-            <button class="btn btn-primary" id="taskModalSaveBtn" onclick="submitTaskModal()">保存任务</button>
-        </div>
-    </div>
-</div>
-
-        <!-- 9.6 💪 健康管理（套用每日计划页面 UI） -->
-        <section id="page-health" class="page">
+    
+<section id="page-health" class="page">
             <!-- 顶部：今日健康待办概览（仿每日计划「今天要处理」sticky 卡） -->
             <div class="sticky-pending-card">
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
@@ -1834,9 +1771,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div id="workoutHistoryBox"></div>
             </div>
         </section>
-
-        <!-- 9.7 🏃 运动健身（参考首页排版 · 复制健康管理卡片内容 + 新增喝水/睡眠记录） -->
-        <section id="page-fitness" class="page">
+<section id="page-fitness" class="page">
             <!-- 顶部欢迎卡（仿首页渐变卡，不含 page-head 标题条） -->
             <div class="card" style="background: linear-gradient(135deg, #fefdf8 0%, #eef5f0 100%); border-left: 6px solid var(--accent-sage);">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
@@ -2014,6 +1949,74 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div id="fitWorkoutHistoryBox"></div>
             </div>
         </section>
+</main>
+</div>
+
+<!-- Modal Dialog: 创建/新增计划任务 -->
+<div class="modal-overlay" id="taskModal" style="display:none;">
+    <div class="modal-card">
+        <div style="font-size:16px; font-weight:700;" id="taskModalTitle">✨ 新增计划 / 任务</div>
+        <div>
+            <label style="font-size:11.5px; font-weight:600;">事项名称</label>
+            <input type="text" id="modalTaskTitle" placeholder="例如：完成亚马逊产品详情页优化...">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-size:11.5px; font-weight:600;">计划日期</label>
+                <input type="date" id="modalTaskDate">
+            </div>
+            <div>
+                <label style="font-size:11.5px; font-weight:600;">目标完成时间</label>
+                <input type="time" id="modalTaskTargetTime">
+            </div>
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+            <div>
+                <label style="font-size:11.5px; font-weight:600;">所属时段</label>
+                <select id="modalTaskSlot">
+                    <option value="晨间">🌅 晨间</option>
+                    <option value="上午">☀️ 上午</option>
+                    <option value="下午">🌤️ 下午</option>
+                    <option value="晚上">🌙 晚上</option>
+                    <option value="复盘">🔍 复盘</option>
+                </select>
+            </div>
+            <div>
+                <label style="font-size:11.5px; font-weight:600;">象限紧急度</label>
+                <select id="modalTaskQuadrant">
+                    <option value="q1">🔴 重要且紧急</option>
+                    <option value="q2">🟡 重要不紧急</option>
+                    <option value="q3">🔵 紧急不重要</option>
+                    <option value="q4">⚪ 不重要不紧急</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <label style="font-size:11.5px; font-weight:600;">类型分类</label>
+            <select id="modalTaskType" onchange="toggleStudyCatField()">
+                <option value="task">💼 普通日常任务</option>
+                <option value="study">📚 专属学习任务</option>
+            </select>
+        </div>
+        <div id="modalStudyCatWrap" style="display:none;">
+            <label style="font-size:11.5px; font-weight:600;">学习任务分类</label>
+            <div style="display:flex; gap:8px; align-items:center;">
+                <select id="modalTaskCategory" style="flex:1;"></select>
+                <button type="button" class="btn btn-secondary" style="font-size:11px; padding:4px 8px;" onclick="openStudyCatModal('manage')">⚙ 管理</button>
+            </div>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+            <button class="btn btn-secondary" onclick="closeTaskModal()">取消</button>
+            <button class="btn btn-primary" id="taskModalSaveBtn" onclick="submitTaskModal()">保存任务</button>
+        </div>
+    </div>
+</div>
+
+        <!-- 9.6 💪 健康管理（套用每日计划页面 UI） -->
+        
+
+        <!-- 9.7 🏃 运动健身（参考首页排版 · 复制健康管理卡片内容 + 新增喝水/睡眠记录） -->
+        
 
         <!-- 健康管理：动作库编辑弹窗 -->
         <div class="modal-overlay" id="exLibModal" style="display:none;">
