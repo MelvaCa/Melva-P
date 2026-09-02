@@ -86,8 +86,7 @@
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, "PingFang SC", "Hiragino Sans GB", sans-serif; }
         body { background-color: var(--bg-main); color: var(--text-primary); display: flex; height: 100vh; overflow: hidden; font-size: 13.5px; }
 
-        html, body { min-width: 0; }
-        .app-container { display: flex; width: 100%; height: 100vh; overflow: hidden; min-width: 0; }
+        .app-container { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
         
         /* Sidebar */
         .sidebar { width: 250px; background: var(--sidebar-bg); border-right: 1px solid var(--card-border); display: flex; flex-direction: column; justify-content: space-between; padding: 18px 12px; flex-shrink: 0; z-index: 10; }
@@ -114,11 +113,11 @@
         .btn-xs:hover { background: var(--accent-sage-light); color: var(--accent-sage); border-color: var(--accent-sage); }
 
         /* Main Workspace */
-        .main-content { flex: 1; overflow-y: auto; overflow-x: hidden; padding: 20px 0 32px; position: relative; display: flex; flex-direction: column; min-width: 0; }
+        .main-content { flex: 1; overflow-y: auto; padding: 20px 32px 32px; position: relative; display: flex; flex-direction: column; }
         
         /* Global Sticky Top Bar with Search */
-        .global-top-bar { position: sticky; top: 0; z-index: 100; background: rgba(248, 246, 240, 0.92); backdrop-filter: blur(8px); padding: 6px 0 16px 0; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; min-width: 0; }
-        .search-box-wrapper { flex: 1; position: relative; min-width: 0; }
+        .global-top-bar { position: sticky; top: 0; z-index: 100; background: rgba(248, 246, 240, 0.92); backdrop-filter: blur(8px); padding: 6px 0 16px 0; margin-bottom: 12px; display: flex; gap: 12px; align-items: center; }
+        .search-box-wrapper { flex: 1; position: relative; }
         .search-input { width: 100%; padding: 10px 16px 10px 38px; border-radius: 30px; border: 1.5px solid var(--card-border); background: #ffffff; font-size: 13px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); transition: var(--transition); }
         .search-input:focus { border-color: var(--accent-sage); outline: none; box-shadow: 0 4px 14px rgba(102, 140, 113, 0.15); }
         .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 14px; }
@@ -132,11 +131,18 @@
         .nav-toggle:active { background: var(--accent-sage-light); }
         .nav-backdrop { display: none; }
 
-        .page { display: none; flex-direction: column; gap: 20px; max-width: none; margin: 0; width: 100%; min-width: 0; overflow-x: hidden; }
+        .page { display: none; flex-direction: column; gap: 20px; max-width: 1100px; margin: 0 auto; width: 100%; }
         .page.active { display: flex; animation: fadeIn 0.25s ease; }
         #page-health .health-timer-num { font-size: 48px; font-weight: 900; color: var(--text-primary); font-variant-numeric: tabular-nums; line-height: 1; }
+        /* 动作库主题切换：等宽均匀分布 */
+        .ex-theme-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 10px; }
+        .ex-theme-row .btn { width: 100%; justify-content: center; padding-left: 4px; padding-right: 4px; }
         @media (max-width: 760px) {
             #page-health .health-timer-num { font-size: 44px !important; }
+            .ex-theme-row { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 420px) {
+            .ex-theme-row { grid-template-columns: repeat(2, 1fr); }
         }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -145,9 +151,7 @@
 
         /* UI Cards */
         .card { background: var(--card-bg); border-radius: var(--radius-lg); border: 1px solid var(--card-border); padding: 20px; box-shadow: var(--shadow); }
-        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; gap: 10px; }
-        .card-header .card-title { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
-        .card-header .btn { white-space: nowrap; flex-shrink: 0; }
+        .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
         .card-title { font-size: 15px; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 8px; }
 
         /* Sticky Today Pending Bar */
@@ -184,7 +188,6 @@
         .task-time.task-done { color: var(--accent-sage); font-weight: 600; }
         .task-created { font-size: 10.5px; color: var(--text-muted); white-space: nowrap; }
         .task-ops { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
-        .task-ops button { white-space: nowrap; }
         /* 紧急优先级醒目标识 */
         .task-item.task-urgent { border-color: var(--danger); background: var(--danger-bg, #fff3f2); box-shadow: inset 3px 0 0 var(--danger); }
         .task-urgent-badge { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; white-space: nowrap; background: var(--danger); color: #fff; letter-spacing: .3px; }
@@ -372,6 +375,24 @@
         .diary-block .edit-area { width: 100%; border: 1px solid var(--accent-sage); border-radius: var(--radius-sm); padding: 7px; font-size: 12.5px; resize: vertical; background: var(--bg-main); color: var(--text-primary); font-family: inherit; }
         @media (max-width: 560px) { .diary-block { grid-column: 1 / -1; } }
 
+        /* 心情表情选择器 */
+        .mood-picker { display: flex; flex-wrap: wrap; gap: 6px; }
+        .mood-chip { font-size: 20px; line-height: 1; padding: 5px 7px; border-radius: 10px; border: 1px solid var(--card-border); background: var(--bg-main); cursor: pointer; transition: transform .08s, box-shadow .08s; }
+        .mood-chip:hover { transform: translateY(-1px); }
+        .mood-chip.active { border-color: var(--accent-sage); box-shadow: 0 0 0 2px var(--accent-sage-bg); background: var(--accent-sage-bg); }
+
+        /* 月历心情记录 */
+        .mood-cal { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+        .mood-cal-head { text-align: center; font-size: 11px; color: var(--text-muted); padding: 3px 0; font-weight: 600; }
+        .mood-cal-cell { border: 1px solid var(--card-border); border-radius: 8px; min-height: 52px; padding: 5px 3px; text-align: center; background: var(--bg-main); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 3px; }
+        .mood-cal-cell:hover { border-color: var(--accent-sage); }
+        .mood-cal-cell .d-num { font-size: 11px; font-weight: 700; color: var(--text-primary); }
+        .mood-cal-cell .d-emo { font-size: 16px; line-height: 1.1; }
+        .mood-cal-cell.empty { background: transparent; border: none; cursor: default; }
+        .mood-detail-mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: flex; align-items: center; justify-content: center; z-index: 999; }
+        .mood-detail-box { background: var(--card-bg); border-radius: 12px; max-width: 420px; width: 92%; max-height: 80vh; overflow: auto; padding: 18px; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+
+
         /* 团队管理：人员画像档案折叠卡片 */
         .member-card { background: #fff; border: 1px solid var(--card-border); border-radius: var(--radius-md); padding: 0; overflow: hidden; }
         .member-summary { display: flex; align-items: center; gap: 10px; padding: 12px 14px; cursor: pointer; user-select: none; }
@@ -440,7 +461,7 @@
             .profile-card { display: block; }
 
             /* 主内容区占满全宽 + 自身滚动（上下滑，左右固定） */
-            .main-content { order: 0; flex: 1; padding: 12px 0 16px; width: 100%; height: 100dvh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+            .main-content { order: 0; flex: 1; padding: 12px 14px 16px; width: 100%; height: 100dvh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
 
             /* 顶栏（搜索 + 状态 + 账号） */
             .global-top-bar { gap: 8px; padding: 4px 0 12px; }
@@ -449,8 +470,7 @@
             .search-input { padding: 9px 14px 9px 34px; font-size: 13px; }
 
             /* 网格单列化 */
-            .grid-5 { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-            .grid-5 > *:nth-child(5) { grid-column: 1 / -1; justify-self: center; width: min(100%, 140px); }
+            .grid-5 { grid-template-columns: repeat(3, 1fr); gap: 10px; }
             .grid-2 { grid-template-columns: 1fr; gap: 12px; }
             .card { padding: 16px; }
 
@@ -771,37 +791,52 @@
             </div>
 
             <div class="card">
-                <div class="card-header"><div class="card-title">🌅 每日时段计划</div></div>
+                <div class="card-title" style="margin-bottom:14px;">🌅 每日时段计划</div>
                 <div class="grid-2" id="dailyTimeSlotsContainer"></div>
             </div>
 
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">📊 习惯周打卡表</div>
+                    <div class="card-title">📊 习惯打卡表</div>
                     <button class="btn btn-secondary" onclick="addHabitPrompt()">+ 新增习惯</button>
                 </div>
-                <div class="table-container">
-                    <table class="habit-table">
-                        <thead>
-                            <tr id="habitWeeklyHeader"></tr>
-                        </thead>
-                        <tbody id="habitWeeklyBody"></tbody>
-                    </table>
+                <div style="display:flex; gap:8px; margin-bottom:10px;">
+                    <button class="btn btn-secondary" id="habitTabWeek" onclick="switchHabitView('week')">周视图</button>
+                    <button class="btn btn-secondary" id="habitTabMonth" onclick="switchHabitView('month')">月视图</button>
                 </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📅 习惯月度打卡表（全月一览）</div>
-                    <span style="font-size:12px; color:var(--text-muted);" id="habitMonthLabel"></span>
+                <!-- 周视图（可跨周查阅） -->
+                <div id="habitWeekView">
+                    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="habitWeekNav(-1)">← 上一周</button>
+                        <span id="habitMainWeekLabel" style="font-size:12px; font-weight:700; color:var(--accent-sage);"></span>
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="habitWeekNav(1)">下一周 →</button>
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="habitWeekNav(0)">本周</button>
+                    </div>
+                    <div class="table-container">
+                        <table class="habit-table">
+                            <thead><tr id="habitWeeklyHeader"></tr></thead>
+                            <tbody id="habitWeeklyBody"></tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="table-container">
-                    <table class="habit-table">
-                        <thead>
-                            <tr id="habitMonthlyHeader"></tr>
-                        </thead>
-                        <tbody id="habitMonthlyBody"></tbody>
-                    </table>
+                <!-- 月视图（可跨月查阅，含周几简写行） -->
+                <div id="habitMonthView" hidden>
+                    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap;">
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="habitMonthNav(-1)">‹ 上月</button>
+                        <span id="habitMainMonthLabel" style="font-size:13px; font-weight:700; color:var(--accent-sage); min-width:120px; text-align:center;"></span>
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="habitMonthNav(1)">下月 ›</button>
+                        <select id="habitMonthYearSel" style="width:90px;" onchange="onHabitMonthSelect()"></select>
+                        <select id="habitMonthSel" style="width:80px;" onchange="onHabitMonthSelect()"></select>
+                    </div>
+                    <div class="table-container">
+                        <table class="habit-table">
+                            <thead>
+                                <tr id="habitMonthlyHeader"></tr>
+                                <tr id="habitMonthlyWeekdayHeader"></tr>
+                            </thead>
+                            <tbody id="habitMonthlyBody"></tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -979,15 +1014,8 @@
                 <!-- 四板块日记录入 -->
                 <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; background:var(--bg-main); padding:14px; border-radius:var(--radius-md); border:1px solid var(--card-border);">
                     <div class="diary-block">
-                        <div class="diary-block-title">💗 今日心情</div>
-                        <select id="diaryMoodSelect">
-                            <option value="😊 充实">😊 充实</option>
-                            <option value="🔥 高效">🔥 高效</option>
-                            <option value="☕ 平静">☕ 平静</option>
-                            <option value="🌿 治愈">🌿 治愈</option>
-                            <option value="🧠 思考">🧠 思考</option>
-                            <option value="😴 疲累">😴 疲累</option>
-                        </select>
+                        <div class="diary-block-title">💗 今日心情 <span style="font-size:11px; color:var(--text-muted); font-weight:400;">（最多选 3 个）</span></div>
+                        <div id="diaryMoodPicker" class="mood-picker"></div>
                         <textarea id="diaryMoodInput" rows="2" placeholder="此刻的心情与状态…"></textarea>
                     </div>
                     <div class="diary-block">
@@ -1013,6 +1041,48 @@
                 <div style="margin-top:18px;">
                     <div style="font-weight:700; font-size:13px; margin-bottom:8px; color:var(--accent-sage);">📌 今日日记（点击「修改」后上方按钮变为「更新日记」，原地保存不新增）</div>
                     <div id="diaryTodayContainer"></div>
+                </div>
+
+                <!-- 月历心情状态记录 + 历史存档（周/月可切换） -->
+                <div class="card">
+                    <div class="card-header">
+                        <div class="card-title">🗓️ 月历心情状态记录</div>
+                        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                            <button class="btn btn-secondary" id="moodTabWeek" onclick="switchMoodView('week')">周视图</button>
+                            <button class="btn btn-secondary" id="moodTabMonth" onclick="switchMoodView('month')">月视图</button>
+                        </div>
+                    </div>
+
+                    <!-- 周视图（可跨周查阅） -->
+                    <div id="moodWeekView" hidden>
+                        <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap;">
+                            <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="moodWeekNav(-1)">← 上一周</button>
+                            <span id="moodWeekLabel" style="font-size:12px; font-weight:700; color:var(--accent-sage); min-width:130px; text-align:center;"></span>
+                            <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="moodWeekNav(1)">下一周 →</button>
+                            <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="moodWeekNav(0)">本周</button>
+                        </div>
+                        <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px;">展示本周每日「日记心情」表情（多篇日记合并），点击有记录的日期查看当日明细。</div>
+                        <div class="table-container">
+                            <table class="habit-table">
+                                <thead><tr id="moodWeekHeader"></tr></thead>
+                                <tbody id="moodWeekBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- 月视图（可跨月查阅，含周几行） -->
+                    <div id="moodMonthView" hidden>
+                        <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap;">
+                            <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="moodCalNav(-1)">‹ 上月</button>
+                            <span id="moodCalStat" style="font-weight:700; color:var(--accent-sage); font-size:12px; min-width:90px; text-align:center;"></span>
+                            <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="moodCalNav(1)">下月 ›</button>
+                            <select id="moodCalYearSel" style="width:90px;" onchange="onMoodCalSelect()"></select>
+                            <select id="moodCalMonthSel" style="width:80px;" onchange="onMoodCalSelect()"></select>
+                        </div>
+                        <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px;">点击有记录的日期可查看当日「日记心情」明细；可切换任意年月查看历史心情。</div>
+                        <div id="moodCalGrid" class="calendar-grid"></div>
+                    </div>
+                    <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">本卡与「学习时段计划 · 月历视图」风格一致。</div>
                 </div>
 
                 <!-- 灵感想法：按年历史归档（不重复记录） -->
@@ -1149,8 +1219,8 @@
         <!-- 11. 📜 每日阅读（国学经典 / 历史名著） -->
         <section id="page-reading" class="page">
             <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📜 每日阅读 · 站在历史的肩膀上前行</div>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;">
+                    <div class="card-title" style="margin:0;">📜 每日阅读 · 站在历史的肩膀上前行</div>
                     <button class="btn btn-secondary" type="button" onclick="refreshDailyReading()">🔄 换一篇推荐</button>
                 </div>
 
@@ -1249,7 +1319,7 @@
         <!-- 9.5 👥 团队管理 -->
         <section id="page-team" class="page">
             <div class="card">
-                <div class="card-header"><div class="card-title">👥 团队管理 · 人员画像与周会记录</div></div>
+                <div class="card-title" style="margin-bottom:14px;">👥 团队管理 · 人员画像与周会记录</div>
 
                 <!-- 人员画像录入 -->
                 <div style="background:var(--bg-main); padding:14px; border-radius:var(--radius-md); border:1px solid var(--card-border);">
@@ -1485,7 +1555,7 @@
         <!-- 10. ⚙️ 设置与数据备份 -->
         <section id="page-settings" class="page">
             <div class="card">
-                <div class="card-header"><div class="card-title">💾 数据自动保存与本地备份保障</div></div>
+                <div class="card-title" style="margin-bottom: 14px;">💾 数据自动保存与本地备份保障</div>
                 <div style="font-size:12.5px; line-height:1.7; color:var(--text-secondary); margin-bottom:14px;">
                     ✅ <b>实时防丢机制：</b> 你的所有修改（任务、习惯、日记、复盘、话术、英语学习笔记等）均会在操作发生瞬间<b>自动写入本地存储（LocalStorage）</b>。<br>
                     ✅ <b>后台自动快照：</b> 系统每隔 10 秒自动更新云端/本地镜像快照，即使突然关闭浏览器或刷新页面，数据也不会丢失。<br>
@@ -1499,7 +1569,7 @@
             </div>
 
             <div class="card">
-                <div class="card-header"><div class="card-title">⚙️ AI 接口配置（关联主流公开引擎）</div></div>
+                <div class="card-title" style="margin-bottom: 14px;">⚙️ AI 接口配置（关联主流公开引擎）</div>
                 <div class="grid-2">
                     <div>
                         <label style="font-size: 11.5px; font-weight: 600;">AI 服务引擎</label>
@@ -1565,7 +1635,7 @@
             </div>
 
             <div class="card">
-                <div class="card-header"><div class="card-title">☁️ 云端实时同步 (Supabase)</div></div>
+                <div class="card-title" style="margin-bottom: 12px;">☁️ 云端实时同步 (Supabase)</div>
                 <div style="font-size:12.5px; line-height:1.7; color:var(--text-secondary); margin-bottom:14px;">
                     开启后，所有数据实时同步到 Supabase 云端。<b>手机端与电脑端填写相同的「同步码」</b>即可双向实时同步；离线时数据自动保存在本机，恢复网络后自动续传。
                 </div>
@@ -1615,7 +1685,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
             <!-- 账户登录 / 退出（统一在设置栏，账号与退出按钮常驻显示） -->
             <div class="card">
-                <div class="card-header"><div class="card-title">🔐 账户登录与退出</div></div>
+                <div class="card-title" style="margin-bottom: 14px;">🔐 账户登录与退出</div>
                 <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:10px;">当前账户：<b id="settingsAccName">未登录</b></div>
                 <div style="display:flex; gap:8px; flex-wrap:wrap;">
                     <button class="btn btn-primary" type="button" id="settingsAccountLoginBtn" onclick="lifeOSShowLogin()">🔓 登录账户</button>
@@ -1624,40 +1694,9 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">已登录时显示账号名，「退出登录」可清空会话；未登录时「退出登录」按钮置灰提示。</div>
             </div>
 
-            <!-- 用户与密码管理（仅管理员已登录可见） -->
-            <div class="card" id="userMgmtCard" style="display:none;">
-                <div class="card-header"><div class="card-title">👥 用户与密码管理 <span style="font-size:11px;color:var(--text-muted);font-weight:400;">（仅管理员可见）</span></div></div>
-                <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:12px;">登录管理员账号后，可在此创建其他用户密码，分享给家人/同伴使用（密码仅保存在本机浏览器，属客户端存储）。</div>
-
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:8px;">
-                    <div class="login-field" style="margin:0;">
-                        <label style="font-size:11.5px;font-weight:600;">新用户名</label>
-                        <input type="text" id="umNewUser" placeholder="例如 family01" autocomplete="off">
-                    </div>
-                    <div></div>
-                    <div class="login-field" style="margin:0;">
-                        <label style="font-size:11.5px;font-weight:600;">设置密码（至少 6 位）</label>
-                        <input type="password" id="umNewPass" placeholder="新用户密码" autocomplete="new-password">
-                    </div>
-                    <div class="login-field" style="margin:0;">
-                        <label style="font-size:11.5px;font-weight:600;">确认密码</label>
-                        <input type="password" id="umNewPass2" placeholder="再次输入" autocomplete="new-password">
-                    </div>
-                </div>
-                <div style="display:flex; gap:8px; align-items:center; margin-top:4px;">
-                    <button class="btn btn-primary" type="button" id="umAddBtn">➕ 创建用户密码</button>
-                    <span id="umMsg" style="font-size:12px;color:var(--text-muted);"></span>
-                </div>
-
-                <div style="margin-top:14px; border-top:1px solid var(--border,#eee); padding-top:10px;">
-                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px; font-weight:600;">已创建的用户</div>
-                    <div id="umList"></div>
-                </div>
-            </div>
-
             <!-- 主题切换 -->
             <div class="card">
-                <div class="card-header"><div class="card-title">🎨 界面主题切换</div></div>
+                <div class="card-title" style="margin-bottom: 14px;">🎨 界面主题切换</div>
                 <div style="font-size:12.5px; color:var(--text-secondary); margin-bottom:14px;">选择界面配色模式，设置会即时生效并自动记忆。</div>
                 <div style="display:flex; gap:10px; flex-wrap:wrap;">
                     <button class="theme-btn" data-theme="light" onclick="applyTheme('light')">☀️ 白天模式</button>
@@ -1667,34 +1706,15 @@ alter publication supabase_realtime add table life_os_sync;</div>
             </div>
         </section>
 
-    
-<section id="page-health" class="page">
-            <!-- 顶部：今日健康待办概览（仿每日计划「今天要处理」sticky 卡） -->
-            <div class="sticky-pending-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; flex-wrap:wrap; gap:8px;">
-                    <div style="font-size:15px; font-weight:800; color:var(--text-primary);">💪 今日健康待办</div>
-                    <div style="display:flex; gap:8px; align-items:center;">
-                        <span style="font-size:10.5px; color:var(--text-muted);">完成三项，健康一整天 🌿</span>
-                        <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去打卡</button>
-                    </div>
-                </div>
-                <div id="healthTodayOverview" class="task-list"></div>
-            </div>
 
-            <!-- 本周健康执行概览（仿每日计划「本周执行概览」） -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📊 本周健康执行概览</div>
-                    <span style="font-size:10.5px; color:var(--text-muted);">近 7 天打卡统计</span>
-                </div>
-                <div style="display:flex; justify-content:space-around; text-align:center; gap:10px; flex-wrap:wrap;" id="healthWeekOverviewBar"></div>
-            </div>
-
-            <!-- ① 循环训练计时器 · 计数器 -->
+        <section id="page-health" class="page">
+            <!-- 顶部：计时器 + 计数器循环训练（紧贴导航栏按钮下方） -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">⏱️ 循环训练计时器 · 计数器</div>
-                    <span style="font-size:11.5px; color:var(--text-muted);">默认：运动 60s / 休息 30s / 4 组</span>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                        <span style="font-size:11.5px; color:var(--text-muted);">默认：运动 60s / 休息 30s / 4 组</span>
+                    </div>
                 </div>
 
                 <!-- 参数设置 -->
@@ -1718,9 +1738,17 @@ alter publication supabase_realtime add table life_os_sync;</div>
                     </div>
                 </div>
                 <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">📝 每完成一组会自动记录：完成时间、当前已完成组数；全部结束后可一键存入今日运动打卡。</div>
+                <!-- 今日运动时长（计时结束自动记录历史） -->
+                <div id="todayExerciseMinBox" style="margin-top:12px; padding:12px 14px; background:var(--bg-main); border:1px solid var(--card-border); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:space-between; gap:10px;">
+                    <div>
+                        <div style="font-size:13px; font-weight:700; color:var(--accent-sage);">🏃 今日运动时长</div>
+                        <div id="todayExerciseMin" style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">今日尚未记录运动时长</div>
+                    </div>
+                    <div id="todayExerciseMinNum" style="font-size:30px; font-weight:900; color:var(--text-primary); font-variant-numeric:tabular-nums; line-height:1;">0<span style="font-size:14px; color:var(--text-muted); font-weight:600;"> 分</span></div>
+                </div>
             </div>
 
-            <!-- ② 体重记录 -->
+            <!-- 体重记录 -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">⚖️ 体重记录</div>
@@ -1735,18 +1763,47 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div id="weightList" class="task-list"></div>
             </div>
 
-            <!-- ③ 运动打卡（背/腿/腹/核心） -->
+            <!-- 喝水记录 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">💧 每日喝水记录</div>
+                    <button class="btn btn-primary" onclick="addWater()">＋ 快速记一杯(250ml)</button>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px;">
+                    <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="waterDate" style="width:140px;"></div>
+                    <div><label style="font-size:11px; font-weight:600;">饮水量(ml)</label><input type="number" id="waterMl" placeholder="如 2000" step="50" style="width:110px;"></div>
+                    <button class="btn btn-secondary" onclick="saveWater()">保存</button>
+                </div>
+                <div id="waterList" class="task-list"></div>
+            </div>
+
+            <!-- 睡眠记录 -->
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">😴 每日睡眠记录</div>
+                    <button class="btn btn-primary" onclick="addSleep()">＋ 记录今日睡眠</button>
+                </div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px;">
+                    <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="sleepDate" style="width:140px;"></div>
+                    <div><label style="font-size:11px; font-weight:600;">时长(小时)</label><input type="number" id="sleepHours" placeholder="如 7.5" step="0.1" style="width:100px;"></div>
+                    <div><label style="font-size:11px; font-weight:600;">质量(1-5)</label><input type="number" id="sleepQuality" placeholder="如 4" min="1" max="5" style="width:80px;"></div>
+                    <button class="btn btn-secondary" onclick="saveSleep()">保存</button>
+                </div>
+                <div id="sleepList" class="task-list"></div>
+            </div>
+
+            <!-- 运动打卡（背/腿/腹/核心） -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">🏋️ 运动打卡 · 练背 / 腿 / 腹 / 核心</div>
-                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去打卡</button>
+                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 今日运动打卡</button>
                 </div>
                 <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">打卡子项为「动作 + 次数」，可与上方计时/计数联动：开始训练后，完成的组数会自动回写到本表。一天记一次。</div>
                 <div id="workoutTodayBox"></div>
 
                 <div style="margin-top:16px;">
                     <div style="font-weight:700; font-size:13.5px; margin-bottom:8px; color:var(--accent-sage);">📚 动作库（可增删改 · 可附图片/链接）</div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
+                    <div class="ex-theme-row">
                         <button class="btn btn-secondary" onclick="renderExerciseLib('sleep')">🌙 睡前</button>
                         <button class="btn btn-secondary" onclick="renderExerciseLib('yoga')">💪 瑜伽</button>
                         <button class="btn btn-secondary" onclick="renderExerciseLib('yogaflow')">🧘 体式</button>
@@ -1763,193 +1820,68 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 </div>
             </div>
 
-            <!-- ④ 运动历史存档 -->
+            <!-- 运动历史存档 -->
             <div class="card">
                 <div class="card-header">
                     <div class="card-title">📁 运动打卡历史存档</div>
                 </div>
                 <div id="workoutHistoryBox"></div>
             </div>
-        </section>
-<section id="page-fitness" class="page">
-            <!-- 顶部欢迎卡（仿首页渐变卡，不含 page-head 标题条） -->
-            <div class="card" style="background: linear-gradient(135deg, #fefdf8 0%, #eef5f0 100%); border-left: 6px solid var(--accent-sage);">
-                <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:12px; flex-wrap:wrap;">
-                    <div>
-                        <div style="font-size: 20px; font-weight: 800;">🏃 运动健身</div>
-                        <div style="font-size: 11px; color: var(--text-muted); margin-top: 6px;" id="fitnessDate"></div>
-                    </div>
-                    <button class="btn btn-secondary" style="font-size:11px; padding:5px 10px; white-space:nowrap;" onclick="openWorkoutLog()">＋ 去打卡</button>
-                </div>
-                <div style="font-size: 13px; color: var(--text-secondary); margin-top: 10px; line-height:1.7;" id="fitnessQuote">今天动一动，身体更轻松✨ 记得喝水、好好睡觉。</div>
-            </div>
 
-            <!-- 圆环指标（仿首页 grid-5 ring-card） -->
-            <div class="grid-5">
-                <div class="card ring-card" style="border: 1.5px solid var(--accent-yellow);">
-                    <svg class="ring-svg"><circle class="ring-bg" cx="36" cy="36" r="28"></circle><circle class="ring-fill" id="fitRingAll" cx="36" cy="36" r="28" stroke="var(--accent-yellow)" stroke-dasharray="175" stroke-dashoffset="175"></circle></svg>
-                    <div class="ring-text" id="fitRingAllText">0%</div>
-                    <div class="ring-label">🌿 今日完成度</div>
-                </div>
-                <div class="card ring-card">
-                    <svg class="ring-svg"><circle class="ring-bg" cx="36" cy="36" r="28"></circle><circle class="ring-fill" id="fitRingWorkout" cx="36" cy="36" r="28" stroke="var(--accent-sage)" stroke-dasharray="175" stroke-dashoffset="175"></circle></svg>
-                    <div class="ring-text" id="fitRingWorkoutText">0%</div>
-                    <div class="ring-label">🏋️ 运动打卡</div>
-                </div>
-                <div class="card ring-card">
-                    <svg class="ring-svg"><circle class="ring-bg" cx="36" cy="36" r="28"></circle><circle class="ring-fill" id="fitRingTrain" cx="36" cy="36" r="28" stroke="var(--accent-warm)" stroke-dasharray="175" stroke-dashoffset="175"></circle></svg>
-                    <div class="ring-text" id="fitRingTrainText">0%</div>
-                    <div class="ring-label">⏱️ 训练计时</div>
-                </div>
-                <div class="card ring-card">
-                    <svg class="ring-svg"><circle class="ring-bg" cx="36" cy="36" r="28"></circle><circle class="ring-fill" id="fitRingWater" cx="36" cy="36" r="28" stroke="var(--accent-blue)" stroke-dasharray="175" stroke-dashoffset="175"></circle></svg>
-                    <div class="ring-text" id="fitRingWaterText">0%</div>
-                    <div class="ring-label">💧 喝水达标</div>
-                </div>
-                <div class="card ring-card">
-                    <svg class="ring-svg"><circle class="ring-bg" cx="36" cy="36" r="28"></circle><circle class="ring-fill" id="fitRingSleep" cx="36" cy="36" r="28" stroke="var(--accent-sage)" stroke-dasharray="175" stroke-dashoffset="175"></circle></svg>
-                    <div class="ring-text" id="fitRingSleepText">0%</div>
-                    <div class="ring-label">😴 睡眠记录</div>
-                </div>
-            </div>
-
-            <!-- 今日重点待办（仿首页今日重点卡） -->
+            <!-- 健康趋势曲线图 -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">🎯 今日健康重点</div>
-                    <button class="btn btn-primary" onclick="openWorkoutLog()">+ 去打卡</button>
-                </div>
-                <div class="task-list" id="fitnessTodayList"></div>
-            </div>
-
-            <!-- ① 循环训练计时器 · 计数器 -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">⏱️ 循环训练计时器 · 计数器</div>
-                    <span style="font-size:11.5px; color:var(--text-muted);">默认：运动 60s / 休息 30s / 4 组</span>
-                </div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:14px;">
-                    <div><label style="font-size:11px; font-weight:600;">运动(秒)</label><input type="number" id="fitWorkSec" value="60" style="width:80px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">休息(秒)</label><input type="number" id="fitRestSec" value="30" style="width:80px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">组数</label><input type="number" id="fitRounds" value="4" style="width:70px;"></div>
-                    <button class="btn btn-secondary" onclick="resetFitnessTimer()" id="fitTimerResetBtn">↺ 重置</button>
-                </div>
-                <div style="display:flex; flex-direction:column; align-items:center; gap:10px; padding:16px; background:var(--bg-main); border-radius:var(--radius-md); border:1px solid var(--card-border);">
-                    <div id="fitTimerPhase" style="font-size:15px; font-weight:800; color:var(--accent-sage);">准备开始</div>
-                    <div id="fitTimerCount" class="health-timer-num" style="font-size:48px; font-weight:900; color:var(--text-primary); font-variant-numeric:tabular-nums; line-height:1;">00:00</div>
-                    <div id="fitTimerRound" style="font-size:13px; color:var(--text-secondary);">已完成 0 / 4 组</div>
-                    <div id="fitTimerLog" style="font-size:11.5px; color:var(--text-muted); min-height:18px; text-align:center;">点击「开始」后，每段时间结束会自动提醒下一个动作。</div>
-                    <div style="display:flex; gap:10px; margin-top:6px;">
-                        <button class="btn btn-primary" id="fitTimerStartBtn" onclick="startFitnessTimer()">▶ 开始</button>
-                        <button class="btn btn-secondary" id="fitTimerPauseBtn" onclick="pauseFitnessTimer()" style="display:none;">⏸ 暂停</button>
-                        <button class="btn btn-secondary" onclick="skipFitnessPhase()">⏭ 跳过本段</button>
+                    <div class="card-title">📈 健康趋势曲线（体重 / 喝水 / 睡眠 / 运动时长）</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                        <button class="btn btn-secondary" onclick="renderHealthChart(7)">近7天</button>
+                        <button class="btn btn-secondary" onclick="renderHealthChart(14)">近14天</button>
+                        <button class="btn btn-secondary" onclick="renderHealthChart(30)">近30天</button>
                     </div>
                 </div>
-                <div style="font-size:11px; color:var(--text-muted); margin-top:8px;">📝 每完成一组会自动记录；全部结束后可一键存入今日运动打卡。</div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px;">四条曲线各自按自身量纲归一化展示趋势（单位不同不可直接比较数值，仅看走向）。</div>
+                <div id="healthChartBox"></div>
             </div>
 
-            <!-- ② 体重记录 -->
-            <div class="card">
-                    <div class="card-header">
-                        <div class="card-title">⚖️ 体重记录</div>
-                        <button class="btn btn-primary" onclick="addFitWeight()">＋ 记录今日体重</button>
-                    </div>
-                    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px;">
-                        <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="fitWeightDate" style="width:140px;"></div>
-                        <div><label style="font-size:11px; font-weight:600;">体重(kg)</label><input type="number" id="fitWeightKg" placeholder="如 65.5" step="0.1" style="width:110px;"></div>
-                        <div><label style="font-size:11px; font-weight:600;">备注</label><input type="text" id="fitWeightNote" placeholder="如 晨起空腹" style="width:160px;"></div>
-                        <button class="btn btn-secondary" onclick="saveFitWeight()">保存</button>
-                    </div>
-                <div id="fitWeightList" class="task-list"></div>
-            </div>
-
-            <!-- ③ 运动打卡（背/腿/腹/核心） -->
+            <!-- 动作库打卡表（周/月可切换） -->
             <div class="card">
                 <div class="card-header">
-                    <div class="card-title">🏋️ 运动打卡 · 练背 / 腿 / 腹 / 核心</div>
-                    <button class="btn btn-primary" onclick="openWorkoutLog()">＋ 去打卡</button>
-                </div>
-                <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:10px;">打卡子项为「动作 + 次数」，可与上方计时/计数联动。一天记一次。</div>
-                <div id="fitWorkoutTodayBox"></div>
-
-                <div style="margin-top:16px;">
-                    <div style="font-weight:700; font-size:13.5px; margin-bottom:8px; color:var(--accent-sage);">📚 动作库（可增删改 · 可附图片/链接）</div>
-                    <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:10px;">
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('sleep')">🌙 睡前</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('yoga')">💪 瑜伽</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('yogaflow')">🧘 体式</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('stretch')">🤸 拉伸</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('baduanjin')">🇨🇳 八段锦</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('taiji')">🥋 太极</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('burn')">🔥 燃脂</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('back')">背</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('legs')">腿</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('abs')">腹</button>
-                        <button class="btn btn-secondary" onclick="renderFitExerciseLib('core')">核心</button>
+                    <div class="card-title">📅 动作库打卡表</div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+                        <button class="btn btn-secondary" id="checkinTabWeek" onclick="switchCheckinView('week')">周视图</button>
+                        <button class="btn btn-secondary" id="checkinTabMonth" onclick="switchCheckinView('month')">月视图</button>
                     </div>
-                    <div id="fitExerciseLibBox"></div>
                 </div>
-            </div>
-
-            <!-- ④ 每日喝水记录（新增，含历史存档） -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">💧 每日喝水记录</div>
-                    <button class="btn btn-primary" onclick="addWater()">＋ 记录今日喝水</button>
-                </div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px;">
-                    <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="waterDate" style="width:140px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">杯数</label><input type="number" id="waterCups" placeholder="如 8" min="0" style="width:80px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">约(ml)</label><input type="number" id="waterMl" placeholder="如 2000" min="0" style="width:100px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">备注</label><input type="text" id="waterNote" placeholder="如 运动前后补水" style="width:160px;"></div>
-                    <button class="btn btn-secondary" onclick="saveWater()">保存</button>
-                </div>
-                <div id="waterList" class="task-list"></div>
-                <!-- 喝水历史存档 -->
-                <div style="margin-top:14px; border-top:1px dashed var(--card-border); padding-top:12px;">
-                    <div style="font-weight:700; font-size:13px; margin-bottom:8px; color:var(--accent-blue);">📁 喝水记录历史存档</div>
-                    <div id="waterHistoryBox" class="task-list"></div>
-                </div>
-            </div>
-
-            <!-- ⑤ 睡眠记录（新增，含历史存档） -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">😴 睡眠记录</div>
-                    <button class="btn btn-primary" onclick="addSleep()">＋ 记录今日睡眠</button>
-                </div>
-                <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:flex-end; margin-bottom:10px;">
-                    <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="sleepDate" style="width:140px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">入睡</label><input type="time" id="sleepTime" style="width:110px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">起床</label><input type="time" id="wakeTime" style="width:110px;"></div>
-                    <div><label style="font-size:11px; font-weight:600;">质量</label>
-                        <select id="sleepQuality" style="width:110px;">
-                            <option value="优">优</option>
-                            <option value="良">良</option>
-                            <option value="中">中</option>
-                            <option value="差">差</option>
-                        </select>
+                <!-- 周视图（可跨周查阅） -->
+                <div id="checkinWeekView" hidden>
+                    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px;">
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="checkinWeekNav(-1)">← 上一周</button>
+                        <span id="checkinWeekLabel" style="font-size:12px; font-weight:700; color:var(--accent-sage);"></span>
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="checkinWeekNav(1)">下一周 →</button>
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="checkinWeekNav(0)">本周</button>
                     </div>
-                    <div><label style="font-size:11px; font-weight:600;">备注</label><input type="text" id="sleepNote" placeholder="如 多梦易醒" style="width:150px;"></div>
-                    <button class="btn btn-secondary" onclick="saveSleep()">保存</button>
+                    <div class="table-container">
+                        <table class="habit-table">
+                            <thead><tr id="checkinWeekHeader"></tr></thead>
+                            <tbody id="checkinWeekBody"></tbody>
+                        </table>
+                    </div>
                 </div>
-                <div id="sleepList" class="task-list"></div>
-                <!-- 睡眠历史存档 -->
-                <div style="margin-top:14px; border-top:1px dashed var(--card-border); padding-top:12px;">
-                    <div style="font-weight:700; font-size:13px; margin-bottom:8px; color:var(--accent-sage);">📁 睡眠记录历史存档</div>
-                    <div id="sleepHistoryBox" class="task-list"></div>
+                <!-- 月视图（可跨月查阅，含周几简写行） -->
+                <div id="checkinMonthView" hidden>
+                    <div style="display:flex; gap:8px; align-items:center; margin-bottom:8px; flex-wrap:wrap;">
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="shiftCheckinMonth(-1)">‹ 上月</button>
+                        <span id="checkinMonthLabel" style="font-size:13px; font-weight:700; color:var(--accent-sage); min-width:120px; text-align:center;"></span>
+                        <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="shiftCheckinMonth(1)">下月 ›</button>
+                        <select id="checkinYearSel" style="width:90px;" onchange="onCheckinMonthSelect()"></select>
+                        <select id="checkinMonthSel" style="width:80px;" onchange="onCheckinMonthSelect()"></select>
+                    </div>
+                    <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px;">点击日期格子可勾选当天完成全部动作库主题（再次点击取消）。按动作库主题组汇总当日完成数。</div>
+                    <div id="checkinMonthBox"></div>
                 </div>
-            </div>
-
-            <!-- ⑥ 运动历史存档 -->
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-title">📁 运动打卡历史存档</div>
-                </div>
-                <div id="fitWorkoutHistoryBox"></div>
             </div>
         </section>
-</main>
+
+    </main>
 </div>
 
 <!-- Modal Dialog: 创建/新增计划任务 -->
@@ -2012,11 +1944,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
     </div>
 </div>
 
-        <!-- 9.6 💪 健康管理（套用每日计划页面 UI） -->
-        
-
-        <!-- 9.7 🏃 运动健身（参考首页排版 · 复制健康管理卡片内容 + 新增喝水/睡眠记录） -->
-        
+        <!-- 9.6 💪 健康管理 -->
 
         <!-- 健康管理：动作库编辑弹窗 -->
         <div class="modal-overlay" id="exLibModal" style="display:none;">
@@ -2041,7 +1969,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         <!-- 健康管理：今日运动打卡弹窗 -->
         <div class="modal-overlay" id="workoutLogModal" style="display:none;">
             <div class="modal-card" style="max-width:520px; max-height:88vh; overflow:auto;">
-                <div style="font-size:16px; font-weight:700; margin-bottom:6px;">＋ 去打卡</div>
+                <div style="font-size:16px; font-weight:700; margin-bottom:6px;">＋ 今日运动打卡</div>
                 <div style="font-size:11.5px; color:var(--text-muted); margin-bottom:8px;">勾选练到的部位，并填写每个动作的完成次数；若用上方计时器训练，组数会自动同步到此。</div>
                 <div style="display:flex; gap:10px; align-items:flex-end; margin-bottom:10px;">
                     <div><label style="font-size:11px; font-weight:600;">日期</label><input type="date" id="workoutLogDate" style="width:140px;"></div>
@@ -2381,12 +2309,16 @@ alter publication supabase_realtime add table life_os_sync;</div>
                     { id: 'c5', name: '仰卧踩单车', sets: '3 组 × 20 次', tip: '仰卧，双腿做踩车动作同时转体，肘碰对侧膝，练核心协调。', img: '', link: '' }
                 ]
             },
+            // 喝水记录（每日累计 ml）
+            waters: [],
+            // 睡眠记录（时长小时 + 质量 1-5）
+            sleeps: [],
+            // 每日运动时长历史（分钟）
+            exerciseMinutes: [],
+            // 动作库打卡月表：{ 'YYYY-MM-DD': { 'part|id': true } }
+            checkinLib: {},
             // 打卡记录：每天一次，含所选部位、动作完成次数、计时计数联动数据、时间戳
-            workoutLogs: [],
-            // 每日喝水记录（带历史）：[{ date, cups, ml, note }]
-            waterLogs: [],
-            // 睡眠记录（带历史）：[{ date, sleepTime, wakeTime, quality, note }]
-            sleepLogs: []
+            workoutLogs: []
         },
         settings: { aiEngine: 'local', apiKey: '', aiBaseUrl: '', aiModel: '', aiProxy: '', customEngines: [], theme: 'light' },
         aiChats: [],
@@ -2528,8 +2460,10 @@ alter publication supabase_realtime add table life_os_sync;</div>
             });
             if (!Array.isArray(mergedHealth.workoutLogs)) mergedHealth.workoutLogs = [];
             if (!Array.isArray(mergedHealth.weights)) mergedHealth.weights = [{ date: getTodayStr(), kg: '' }];
-            if (!Array.isArray(mergedHealth.waterLogs)) mergedHealth.waterLogs = [];
-            if (!Array.isArray(mergedHealth.sleepLogs)) mergedHealth.sleepLogs = [];
+            if (!Array.isArray(mergedHealth.waters)) mergedHealth.waters = [];
+            if (!Array.isArray(mergedHealth.sleeps)) mergedHealth.sleeps = [];
+            if (!Array.isArray(mergedHealth.exerciseMinutes)) mergedHealth.exerciseMinutes = [];
+            if (typeof mergedHealth.checkinLib !== 'object' || mergedHealth.checkinLib === null) mergedHealth.checkinLib = {};
             return Object.assign({}, DEFAULT_STATE, parsed, {
                 settings: Object.assign({}, DEFAULT_STATE.settings, parsed.settings || {}),
                 ideas: parsed.ideas || [],
@@ -2542,7 +2476,17 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 englishFavs: parsed.englishFavs || [],
                 favCategories: parsed.favCategories || [],
                 studyPlans: parsed.studyPlans || [],
-                health: mergedHealth
+                health: mergedHealth,
+                habits: (function(){
+                    if (!Array.isArray(parsed.habits)) return DEFAULT_STATE.habits;
+                    // 跨日学习汇入的打卡项：计划日期用蓝色填充提示，不默认勾选完成
+                    return parsed.habits.map(h => {
+                        if (h && h.category === 'study-cross' && !Array.isArray(h.plannedDates)) {
+                            return Object.assign({}, h, { plannedDates: (h.dates || []).slice(), dates: [] });
+                        }
+                        return h;
+                    });
+                })()
             });
         } catch(e) { return DEFAULT_STATE; }
     }
@@ -2633,11 +2577,11 @@ alter publication supabase_realtime add table life_os_sync;</div>
     // Navigation Logic（导航栏由 JS 渲染，支持长按拖拽自定义排序）
     const NAV_META = {
         home: '🏠 首页', daily: '📅 每日计划', tasks: '✅ 日常任务', study: '📚 学习管理',
-        english: '🇬🇧 英语学习', health: '💪 健康管理', fitness: '🏃 运动健身', diary: '📖 每日日记', review: '🔍 周期复盘',
+        english: '🇬🇧 英语学习', health: '💪 健康管理', diary: '📖 每日日记', review: '🔍 周期复盘',
         expression: '🗣️ 表达能力', reading: '📜 每日阅读', team: '👥 团队管理', lifeplan: '🚩 人生规划',
         mind: '🧠 思想解放', favorites: '📥 收藏夹', notes: '📒 AI 笔记', settings: '⚙️ 设置与备份'
     };
-    const NAV_DEFAULT_ORDER = ['home','daily','tasks','study','english','health','fitness','diary','review','expression','reading','team','lifeplan','mind','favorites','notes','settings'];
+    const NAV_DEFAULT_ORDER = ['home','daily','tasks','study','english','health','diary','review','expression','reading','team','lifeplan','mind','favorites','notes','settings'];
     function getNavOrder() {
         try {
             const saved = JSON.parse(localStorage.getItem('lifeOSNavOrder') || 'null');
@@ -2924,8 +2868,6 @@ alter publication supabase_realtime add table life_os_sync;</div>
     // Render Dashboard & Modules
     // ===== 💪 健康管理模块 =====
     function renderHealthPage() {
-        renderHealthOverview();      // 顶部「今日健康待办」sticky 卡
-        renderHealthWeekOverview();  // 「本周健康执行概览」
         // 体重列表（最新在前）
         const wbox = document.getElementById('weightList');
         if (wbox) {
@@ -2945,7 +2887,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         if (tbox) {
             const log = (state.health.workoutLogs || []).find(l => l.date === today);
             if (!log) {
-                tbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 去打卡」。</div>`;
+                tbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 今日运动打卡」。</div>`;
             } else {
                 const rows = (log.items || []).map(it => `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--card-border);">
                     <span style="font-size:12.5px;">${escapeHtml(it.part)} · ${escapeHtml(it.name)}</span>
@@ -2972,390 +2914,294 @@ alter publication supabase_realtime add table life_os_sync;</div>
                     <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteWorkoutLog('${l.date}')">🗑</button>
                 </div>`).join('') : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">还没有运动打卡记录。</div>`;
         }
-    }
-
-    // 顶部「今日健康待办」sticky 概览（仿每日计划「今天要处理」）
-    function renderHealthOverview() {
-        const box = document.getElementById('healthTodayOverview');
-        if (!box) return;
-        const today = getTodayStr();
-        const todayLog = (state.health.workoutLogs || []).find(l => l.date === today);
-        const todayWeight = (state.health.weights || []).find(w => w.date === today && (w.kg !== '' && w.kg != null));
-        // 计时器今日是否跑过：用今日打卡里的 timerRounds 是否 >0 判定（无独立记录时退化为「未记录」）
-        const timerDone = !!(todayLog && (todayLog.timerRounds || 0) > 0);
-
-        const items = [
-            { icon: '🏋️', label: '运动打卡', done: !!todayLog,
-              action: todayLog ? '' : "openWorkoutLog()", cta: todayLog ? '已完成' : '去打卡' },
-            { icon: '⚖️', label: '记录体重', done: !!todayWeight,
-              action: todayWeight ? '' : "addWeight()", cta: todayWeight ? '已记录' : '去记录' },
-            { icon: '⏱️', label: '完成训练计时', done: timerDone,
-              action: timerDone ? '' : "document.getElementById('workSec') && document.getElementById('timerStartBtn').click()", cta: timerDone ? '已完成' : '去训练' }
-        ];
-        box.innerHTML = items.map(it => `
-            <div class="task-item ${it.done ? '' : ''}" style="flex-direction:row; align-items:center; justify-content:space-between; ${it.done ? 'background:var(--accent-sage-light);' : ''}">
-                <div class="task-line1">
-                    <div class="task-check ${it.done ? 'checked' : ''}" style="pointer-events:none;">${it.done ? '✓' : ''}</div>
-                    <span class="task-text" style="${it.done ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${it.icon} ${it.label}</span>
-                </div>
-                ${it.done
-                    ? `<span style="font-size:12px; font-weight:700; color:var(--accent-sage);">${it.cta}</span>`
-                    : `<button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="${it.action}">${it.cta}</button>`}
-            </div>`).join('');
-    }
-
-    // 「本周健康执行概览」（仿每日计划「本周执行概览」）
-    function renderHealthWeekOverview() {
-        const bar = document.getElementById('healthWeekOverviewBar');
-        if (!bar) return;
-        const past7 = getPast7Days();
-        const logs = state.health.workoutLogs || [];
-        const weights = state.health.weights || [];
-        const workoutDays = past7.filter(d => logs.some(l => l.date === d)).length;
-        const weightDays = past7.filter(d => weights.some(w => w.date === d && (w.kg !== '' && w.kg != null))).length;
-        const timerDays = past7.filter(d => logs.some(l => l.date === d && (l.timerRounds || 0) > 0)).length;
-
-        const cells = [
-            { num: workoutDays, label: '🏋️ 运动打卡 (天)' },
-            { num: weightDays, label: '⚖️ 体重记录 (天)' },
-            { num: timerDays, label: '⏱️ 训练计时 (天)' }
-        ];
-        bar.innerHTML = cells.map(c => `
-            <div style="min-width:90px;">
-                <div style="font-size:26px; font-weight:900; color:var(--accent-sage); line-height:1.1;">${c.num}<span style="font-size:13px; font-weight:600; color:var(--text-muted);"> / 7</span></div>
-                <div style="font-size:11.5px; color:var(--text-secondary); margin-top:4px;">${c.label}</div>
-            </div>`).join('');
-    }
-
-    /* ===================== 🏃 运动健身 板块 ===================== */
-    var currentFitExPart = 'sleep';
-
-    function renderFitnessPage() {
-        const today = getTodayStr();
-
-        // 顶部日期
-        const fd = document.getElementById('fitnessDate');
-        if (fd) fd.innerText = `${new Date().toLocaleDateString('zh-CN', {year:'numeric', month:'long', day:'numeric'})} · ${['星期日','星期一','星期二','星期三','星期四','星期五','星期六'][new Date().getDay()]}`;
-
-        const logs = state.health.workoutLogs || [];
-        const weights = state.health.weights || [];
-        const waterLogs = state.health.waterLogs || [];
-        const sleepLogs = state.health.sleepLogs || [];
-        const todayLog = logs.find(l => l.date === today);
-        const todayWeight = weights.find(w => w.date === today && (w.kg !== '' && w.kg != null));
-        const todayWater = waterLogs.find(w => w.date === today);
-        const todaySleep = sleepLogs.find(s => s.date === today);
-        const timerDone = !!(todayLog && (todayLog.timerRounds || 0) > 0);
-
-        // —— 圆环指标 ——
-        const workoutDone = !!todayLog;
-        const trainDone = timerDone;
-        const waterDone = !!(todayWater && ((todayWater.cups && todayWater.cups >= 8) || (todayWater.ml && todayWater.ml >= 1500)));
-        const sleepDone = !!todaySleep;
-        const allPct = Math.round(((workoutDone?1:0)+(trainDone?1:0)+(waterDone?1:0)+(sleepDone?1:0)) / 4 * 100);
-        updateRing('fitRingAll', 'fitRingAllText', allPct);
-        updateRing('fitRingWorkout', 'fitRingWorkoutText', workoutDone ? 100 : 0);
-        updateRing('fitRingTrain', 'fitRingTrainText', trainDone ? 100 : 0);
-        updateRing('fitRingWater', 'fitRingWaterText', waterDone ? 100 : 0);
-        updateRing('fitRingSleep', 'fitRingSleepText', sleepDone ? 100 : 0);
-
-        // —— 今日健康重点（仿首页今日重点卡） ——
-        const fl = document.getElementById('fitnessTodayList');
-        if (fl) {
-            const items = [
-                { icon:'🏋️', label:'运动打卡', done:workoutDone, action:"openWorkoutLog()", cta:workoutDone?'已完成':'去打卡' },
-                { icon:'⏱️', label:'完成训练计时', done:trainDone, action:"document.getElementById('fitTimerStartBtn')&&document.getElementById('fitTimerStartBtn').click()", cta:trainDone?'已完成':'去训练' },
-                { icon:'💧', label:'喝水达标 (≥8杯/1500ml)', done:waterDone, action:"addWater()", cta:waterDone?'已达标':'去记录' },
-                { icon:'😴', label:'记录睡眠', done:sleepDone, action:"addSleep()", cta:sleepDone?'已记录':'去记录' },
-                { icon:'⚖️', label:'记录体重', done:!!todayWeight, action:"addWeight()", cta:todayWeight?'已记录':'去记录' }
-            ];
-            fl.innerHTML = items.map(it => `
-                <div class="task-item" style="flex-direction:row; align-items:center; justify-content:space-between; ${it.done ? 'background:var(--accent-sage-light);' : ''}">
-                    <div class="task-line1">
-                        <div class="task-check ${it.done ? 'checked' : ''}" style="pointer-events:none;">${it.done ? '✓' : ''}</div>
-                        <span class="task-text" style="${it.done ? 'text-decoration:line-through; color:var(--text-muted);' : ''}">${it.icon} ${it.label}</span>
-                    </div>
-                    ${it.done
-                        ? `<span style="font-size:12px; font-weight:700; color:var(--accent-sage);">${it.cta}</span>`
-                        : `<button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="${it.action}">${it.cta}</button>`}
-                </div>`).join('');
-        }
-
-        // —— 体重列表（最新在前） ——
-        const fwbox = document.getElementById('fitWeightList');
-        if (fwbox) {
-            const ws = weights.filter(w => w.kg !== '' && w.kg != null).slice().sort((a,b) => b.date.localeCompare(a.date));
-            fwbox.innerHTML = ws.length ? ws.map(w => `
+        // 喝水列表
+        const wabox = document.getElementById('waterList');
+        if (wabox) {
+            const ws = (state.health.waters || []).filter(w => w.ml).slice().sort((a,b) => b.date.localeCompare(a.date));
+            wabox.innerHTML = ws.length ? ws.map(w => `
                 <div class="entry-card" style="margin-bottom:8px;">
                     <div class="entry-main">
-                        <div style="font-weight:700;">${escapeHtml(w.date)} ｜ ${escapeHtml(String(w.kg))} kg</div>
+                        <div style="font-weight:700;">${escapeHtml(w.date)} ｜ ${escapeHtml(String(w.ml))} ml</div>
                         ${w.note ? `<div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(w.note)}</div>` : ''}
                     </div>
-                    <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteFitWeight('${w.date}')">🗑</button>
-                </div>`).join('') : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">还没有体重记录。</div>`;
+                    <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteWater('${w.date}')">🗑</button>
+                </div>`).join('') : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">还没有喝水记录。</div>`;
         }
-
-        // —— 今日运动打卡 ——
-        const ftbox = document.getElementById('fitWorkoutTodayBox');
-        if (ftbox) {
-            if (!todayLog) ftbox.innerHTML = `<div style="font-size:12px; color:var(--text-muted);">今天还没打卡，点右上角「＋ 去打卡」。</div>`;
-            else {
-                const rows = (todayLog.items || []).map(it => `<div style="display:flex; justify-content:space-between; padding:4px 0; border-bottom:1px dashed var(--card-border);">
-                    <span style="font-size:12.5px;">${escapeHtml(it.part)} · ${escapeHtml(it.name)}</span>
-                    <span style="font-size:12.5px; font-weight:700; color:var(--accent-sage);">${escapeHtml(it.count || '—')}</span>
-                </div>`).join('');
-                ftbox.innerHTML = `<div style="background:var(--bg-main); border-radius:8px; padding:10px; border:1px solid var(--card-border);">
-                    <div style="font-size:12px; color:var(--text-secondary); margin-bottom:4px;">✅ 已打卡 · 计时器完成 ${todayLog.timerRounds || 0} 组 · ${todayLog.loggedAt || ''}</div>${rows}</div>`;
-            }
-        }
-
-        // —— 动作库（默认睡前） ——
-        if (!document.getElementById('fitExerciseLibBox').innerHTML.trim()) renderFitExerciseLib('sleep');
-
-        // —— 喝水列表 + 历史 ——
-        renderWaterList();
-        renderWaterHistory();
-        // —— 睡眠列表 + 历史 ——
-        renderSleepList();
-        renderSleepHistory();
-        // —— 运动历史 ——
-        const fhbox = document.getElementById('fitWorkoutHistoryBox');
-        if (fhbox) {
-            const all = logs.slice().sort((a,b) => b.date.localeCompare(a.date));
-            fhbox.innerHTML = all.length ? all.map(l => `
+        // 睡眠列表
+        const slbox = document.getElementById('sleepList');
+        if (slbox) {
+            const ss = (state.health.sleeps || []).filter(s => s.hours).slice().sort((a,b) => b.date.localeCompare(a.date));
+            slbox.innerHTML = ss.length ? ss.map(s => `
                 <div class="entry-card" style="margin-bottom:8px;">
                     <div class="entry-main">
-                        <div style="font-weight:700;">${escapeHtml(l.date)} ｜ 完成 ${l.items ? l.items.length : 0} 个动作 · 计时器 ${l.timerRounds || 0} 组</div>
-                        <div style="font-size:11.5px; color:var(--text-secondary); margin-top:3px;">${(l.items || []).map(it => escapeHtml(it.part + '·' + it.name + ' ' + (it.count||''))).join('；')}</div>
+                        <div style="font-weight:700;">${escapeHtml(s.date)} ｜ ${escapeHtml(String(s.hours))} 小时 ｜ 质量 ${'⭐'.repeat(Math.max(0,Math.min(5,s.quality||0)))||'—'}</div>
                     </div>
-                    <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteWorkoutLog('${l.date}')">🗑</button>
-                </div>`).join('') : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">还没有运动打卡记录。</div>`;
+                    <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteSleep('${s.date}')">🗑</button>
+                </div>`).join('') : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">还没有睡眠记录。</div>`;
+        }
+        // 今日运动时长
+        renderTodayExerciseMin();
+        // 趋势图（默认近14天）
+        if (document.getElementById('healthChartBox')) renderHealthChart(currentChartDays || 14);
+        // 动作库打卡月表
+        if (document.getElementById('checkinMonthBox') || document.getElementById('checkinWeekBody')) renderCheckinTables();
+    }
+
+    // 今日运动时长（显示 + 历史）
+    function renderTodayExerciseMin() {
+        const box = document.getElementById('todayExerciseMin');
+        const num = document.getElementById('todayExerciseMinNum');
+        if (!box || !num) return;
+        const today = getTodayStr();
+        const rec = (state.health.exerciseMinutes || []).find(x => x.date === today);
+        if (rec) {
+            box.innerText = `今日已运动 ${rec.min} 分钟（记录于 ${rec.loggedAt || ''}）`;
+            num.innerHTML = `${rec.min}<span style="font-size:14px; color:var(--text-muted); font-weight:600;"> 分</span>`;
+        } else {
+            box.innerText = '今日尚未记录运动时长';
+            num.innerHTML = `0<span style="font-size:14px; color:var(--text-muted); font-weight:600;"> 分</span>`;
         }
     }
-
-    // —— 体重（写入共享 state.health.weights） ——
-    function addFitWeight() {
-        document.getElementById('fitWeightDate').value = getTodayStr();
-        document.getElementById('fitWeightKg').value = '';
-        document.getElementById('fitWeightNote').value = '';
-        showToast('请填写体重后点「保存」');
-    }
-    function saveFitWeight() {
-        const date = document.getElementById('fitWeightDate').value || getTodayStr();
-        const kg = document.getElementById('fitWeightKg').value;
-        const note = document.getElementById('fitWeightNote').value.trim();
-        if (!kg) { showToast('请填写体重'); return; }
-        state.health.weights = state.health.weights || [];
-        const ex = state.health.weights.find(w => w.date === date);
-        if (ex) { ex.kg = kg; ex.note = note; }
-        else state.health.weights.unshift({ date, kg, note });
-        saveState(); renderFitnessPage(); renderHealthPage(); showToast('体重已记录');
-    }
-    function deleteFitWeight(date) {
-        confirmDelete('删除这条体重记录吗？', () => {
-            state.health.weights = (state.health.weights || []).filter(w => w.date !== date);
-            saveState(); renderFitnessPage(); renderHealthPage(); showToast('已删除');
-        }, '删除体重记录');
-    }
-
-    // —— 喝水记录 ——
-    function addWater() {
-        document.getElementById('waterDate').value = getTodayStr();
-        document.getElementById('waterCups').value = '';
-        document.getElementById('waterMl').value = '';
-        document.getElementById('waterNote').value = '';
-        showToast('请填写喝水杯数后点「保存」');
-    }
-    function saveWater() {
-        const date = document.getElementById('waterDate').value || getTodayStr();
-        const cups = parseInt(document.getElementById('waterCups').value, 10) || 0;
-        const ml = parseInt(document.getElementById('waterMl').value, 10) || 0;
-        const note = document.getElementById('waterNote').value.trim();
-        if (!cups && !ml) { showToast('请至少填写杯数或毫升数'); return; }
-        state.health.waterLogs = state.health.waterLogs || [];
-        const ex = state.health.waterLogs.find(w => w.date === date);
-        if (ex) { ex.cups = cups; ex.ml = ml; ex.note = note; }
-        else state.health.waterLogs.unshift({ date, cups, ml, note });
-        saveState(); renderFitnessPage(); showToast('喝水已记录 💧');
-    }
-    function deleteWater(date) {
-        confirmDelete('删除这条喝水记录吗？', () => {
-            state.health.waterLogs = (state.health.waterLogs || []).filter(w => w.date !== date);
-            saveState(); renderFitnessPage(); showToast('已删除');
-        }, '删除喝水记录');
-    }
-    function renderWaterList() {
-        const box = document.getElementById('waterList');
-        if (!box) return;
+    function recordExerciseMinutes(min) {
+        if (!min || min <= 0) return;
         const today = getTodayStr();
-        const w = (state.health.waterLogs || []).find(x => x.date === today);
-        box.innerHTML = w
-            ? `<div class="entry-card" style="margin-bottom:8px;"><div class="entry-main">
-                <div style="font-weight:700;">${escapeHtml(w.date)} ｜ ${w.cups ? w.cups + ' 杯' : ''}${w.ml ? ' · ' + w.ml + ' ml' : ''}</div>
-                ${w.note ? `<div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(w.note)}</div>` : ''}
-                </div><button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteWater('${w.date}')">🗑</button></div>`
-            : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">今天还没记录喝水，点右上角「＋ 记录今日喝水」。</div>`;
-    }
-    function renderWaterHistory() {
-        const box = document.getElementById('waterHistoryBox');
-        if (!box) return;
-        const list = (state.health.waterLogs || []).slice().sort((a,b) => b.date.localeCompare(a.date));
-        box.innerHTML = list.length ? list.map(w => `
-            <div class="entry-card" style="margin-bottom:6px; background:var(--bg-main);">
-                <div class="entry-main">
-                    <div style="font-weight:700;">${escapeHtml(w.date)} ｜ ${w.cups ? w.cups + ' 杯' : ''}${w.ml ? ' · ' + w.ml + ' ml' : ''}</div>
-                    ${w.note ? `<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(w.note)}</div>` : ''}
-                </div>
-                <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteWater('${w.date}')">🗑</button>
-            </div>`).join('') : `<div style="font-size:11.5px; color:var(--text-muted); padding:6px 0;">暂无历史记录。</div>`;
+        state.health.exerciseMinutes = state.health.exerciseMinutes || [];
+        const ex = state.health.exerciseMinutes.find(x => x.date === today);
+        const now = new Date().toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+        if (ex) { ex.min = min; ex.loggedAt = now; }
+        else state.health.exerciseMinutes.unshift({ date: today, min, loggedAt: now });
+        saveState();
     }
 
-    // —— 睡眠记录 ——
-    function addSleep() {
-        document.getElementById('sleepDate').value = getTodayStr();
-        document.getElementById('sleepTime').value = '';
-        document.getElementById('wakeTime').value = '';
-        document.getElementById('sleepQuality').value = '良';
-        document.getElementById('sleepNote').value = '';
-        showToast('请填写入睡/起床时间后点「保存」');
-    }
-    function saveSleep() {
-        const date = document.getElementById('sleepDate').value || getTodayStr();
-        const sleepTime = document.getElementById('sleepTime').value;
-        const wakeTime = document.getElementById('wakeTime').value;
-        const quality = document.getElementById('sleepQuality').value;
-        const note = document.getElementById('sleepNote').value.trim();
-        if (!sleepTime || !wakeTime) { showToast('请填写入睡和起床时间'); return; }
-        state.health.sleepLogs = state.health.sleepLogs || [];
-        const ex = state.health.sleepLogs.find(s => s.date === date);
-        if (ex) { ex.sleepTime = sleepTime; ex.wakeTime = wakeTime; ex.quality = quality; ex.note = note; }
-        else state.health.sleepLogs.unshift({ date, sleepTime, wakeTime, quality, note });
-        saveState(); renderFitnessPage(); showToast('睡眠已记录 😴');
-    }
-    function deleteSleep(date) {
-        confirmDelete('删除这条睡眠记录吗？', () => {
-            state.health.sleepLogs = (state.health.sleepLogs || []).filter(s => s.date !== date);
-            saveState(); renderFitnessPage(); showToast('已删除');
-        }, '删除睡眠记录');
-    }
-    function renderSleepList() {
-        const box = document.getElementById('sleepList');
+    // 健康趋势曲线（SVG 折线，各序列按自身量纲归一化）
+    var currentChartDays = 14;
+    function renderHealthChart(days) {
+        currentChartDays = days || currentChartDays;
+        const box = document.getElementById('healthChartBox');
         if (!box) return;
-        const today = getTodayStr();
-        const s = (state.health.sleepLogs || []).find(x => x.date === today);
-        box.innerHTML = s
-            ? `<div class="entry-card" style="margin-bottom:8px;"><div class="entry-main">
-                <div style="font-weight:700;">${escapeHtml(s.date)} ｜ 😴 ${escapeHtml(s.sleepTime)} → ⏰ ${escapeHtml(s.wakeTime)} ｜ 质量：${escapeHtml(s.quality)}</div>
-                ${s.note ? `<div style="font-size:11.5px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(s.note)}</div>` : ''}
-                </div><button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteSleep('${s.date}')">🗑</button></div>`
-            : `<div style="font-size:12px; color:var(--text-muted); padding:8px 0;">今天还没记录睡眠，点右上角「＋ 记录今日睡眠」。</div>`;
-    }
-    function renderSleepHistory() {
-        const box = document.getElementById('sleepHistoryBox');
-        if (!box) return;
-        const list = (state.health.sleepLogs || []).slice().sort((a,b) => b.date.localeCompare(a.date));
-        box.innerHTML = list.length ? list.map(s => `
-            <div class="entry-card" style="margin-bottom:6px; background:var(--bg-main);">
-                <div class="entry-main">
-                    <div style="font-weight:700;">${escapeHtml(s.date)} ｜ 😴 ${escapeHtml(s.sleepTime)} → ⏰ ${escapeHtml(s.wakeTime)} ｜ 质量：${escapeHtml(s.quality)}</div>
-                    ${s.note ? `<div style="font-size:11px; color:var(--text-secondary); margin-top:2px;">${escapeHtml(s.note)}</div>` : ''}
-                </div>
-                <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteSleep('${s.date}')">🗑</button>
-            </div>`).join('') : `<div style="font-size:11.5px; color:var(--text-muted); padding:6px 0;">暂无历史记录。</div>`;
+        const n = currentChartDays;
+        // 生成最近 n 天日期
+        const dates = [];
+        for (let i = n - 1; i >= 0; i--) dates.push(addDaysStr(getTodayStr(), -i));
+        const wmap = {}, wamap = {}, smap = {}, emap = {};
+        (state.health.weights || []).forEach(x => { if (x.kg) wmap[x.date] = parseFloat(x.kg); });
+        (state.health.waters || []).forEach(x => { if (x.ml) wamap[x.date] = parseFloat(x.ml); });
+        (state.health.sleeps || []).forEach(x => { if (x.hours) smap[x.date] = parseFloat(x.hours); });
+        (state.health.exerciseMinutes || []).forEach(x => { if (x.min) emap[x.date] = parseFloat(x.min); });
+        const series = [
+            { name: '体重(kg)', color: '#e23b3b', data: dates.map(d => wmap[d] != null ? wmap[d] : null) },
+            { name: '喝水(ml)', color: '#2f9be0', data: dates.map(d => wamap[d] != null ? wamap[d] : null) },
+            { name: '睡眠(h)', color: '#8a6fd6', data: dates.map(d => smap[d] != null ? smap[d] : null) },
+            { name: '运动(分)', color: '#3ca76b', data: dates.map(d => emap[d] != null ? emap[d] : null) }
+        ];
+        const W = 640, H = 260, padL = 36, padR = 12, padT = 16, padB = 28;
+        const plotW = W - padL - padR, plotH = H - padT - padB;
+        // 统一 x 步长
+        const stepX = dates.length > 1 ? plotW / (dates.length - 1) : 0;
+        function yOf(val, min, max) {
+            if (val == null || max === min) return padT + plotH;
+            return padT + plotH - ((val - min) / (max - min)) * plotH;
+        }
+        let svg = `<svg viewBox="0 0 ${W} ${H}" style="width:100%; height:auto; background:var(--bg-main); border-radius:8px; border:1px solid var(--card-border);">`;
+        // 网格 + x 轴标签（每 5 天或首尾）
+        series.forEach(s => {
+            const vals = s.data.filter(v => v != null);
+            if (!vals.length) return;
+            const min = Math.min(...vals), max = Math.max(...vals);
+            let d = '';
+            s.data.forEach((v, i) => {
+                if (v == null) return;
+                const x = padL + i * stepX;
+                const y = yOf(v, min, max);
+                d += (d ? ' L' : 'M') + x.toFixed(1) + ' ' + y.toFixed(1);
+            });
+            svg += `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+            // 数据点
+            s.data.forEach((v, i) => {
+                if (v == null) return;
+                const x = padL + i * stepX;
+                const y = yOf(v, min, max);
+                svg += `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.2" fill="${s.color}"/>`;
+            });
+        });
+        // x 轴日期标签（首、中、尾）
+        [0, Math.floor((dates.length-1)/2), dates.length-1].forEach(i => {
+            if (i < 0 || i >= dates.length) return;
+            const x = padL + i * stepX;
+            svg += `<text x="${x.toFixed(1)}" y="${H-8}" font-size="9" fill="var(--text-muted)" text-anchor="${i===0?'start':i===dates.length-1?'end':'middle'}">${dates[i].slice(5)}</text>`;
+        });
+        svg += `</svg>`;
+        // 图例
+        const legend = series.map(s => `<span style="display:inline-flex; align-items:center; gap:4px; font-size:11px; color:var(--text-secondary); margin-right:12px;"><span style="width:10px; height:3px; background:${s.color}; display:inline-block; border-radius:2px;"></span>${s.name}</span>`).join('');
+        box.innerHTML = `<div style="margin-bottom:6px;">${legend}</div>` + svg;
     }
 
-    // —— 动作库（渲染到健身页独立容器，复用全局 exerciseLib 数据） ——
-    function renderFitExerciseLib(part) {
-        currentFitExPart = part || currentFitExPart;
-        const box = document.getElementById('fitExerciseLibBox');
-        if (!box) return;
+    // 动作库打卡月表
+    var checkinYear = new Date().getFullYear(), checkinMonth = new Date().getMonth();
+    function shiftCheckinMonth(delta) {
+        checkinMonth += delta;
+        if (checkinMonth < 0) { checkinMonth = 11; checkinYear--; }
+        if (checkinMonth > 11) { checkinMonth = 0; checkinYear++; }
+        renderCheckinMonth();
+    }
+    function checkinThemeList() {
+        // 动作库全部主题组（带中文名）
         const names = { sleep:'🌙睡前', yoga:'💪瑜伽', yogaflow:'🧘体式', stretch:'🤸拉伸', baduanjin:'🇨🇳八段锦', taiji:'🥋太极', burn:'🔥燃脂', back:'背', legs:'腿', abs:'腹', core:'核心' };
-        let list = state.health.exerciseLib[currentFitExPart] || [];
-        box.innerHTML = `<div style="font-weight:700; font-size:13px; color:var(--accent-warm); margin-bottom:8px;">💡 练${names[currentFitExPart] || currentFitExPart}（${list.length} 个动作）</div>` +
-            list.map(a => `<div class="entry-card" style="margin-bottom:8px; background:var(--bg-main);">
-                <div class="entry-main">
-                    <div style="font-weight:700;">${escapeHtml(a.name)} <span style="font-size:11px; color:var(--accent-sage); font-weight:600;">· ${escapeHtml(a.sets || '')}</span></div>
-                    <div style="font-size:11.5px; color:var(--text-secondary); margin-top:3px;">${escapeHtml(a.tip || '')}</div>
-                    <div style="font-size:11px; margin-top:4px;">${(a.img ? `<a href="${escapeAttr(a.img)}" target="_blank" style="color:var(--accent-blue);">🖼 图片</a> ` : '')}${(a.link ? `<a href="${escapeAttr(a.link)}" target="_blank" style="color:var(--accent-blue);">🔗 参考</a>` : '')}</div>
-                </div>
-                <div style="display:flex; flex-direction:column; gap:4px; align-items:flex-end;">
-                    <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="openExLibModal('${part}','${a.id}')">编辑</button>
-                    <button class="btn btn-secondary" style="font-size:10px; padding:3px 7px;" onclick="deleteExLib('${part}','${a.id}')">🗑</button>
-                </div>
-            </div>`).join('') +
-            `<button class="btn btn-secondary" style="font-size:11px; margin-top:4px;" onclick="openExLibModal('${part}','')">＋ 新增${names[part] || part}动作</button>`;
+        return Object.keys(state.health.exerciseLib || {}).map(part => ({ part, name: names[part] || part }));
+    }
+    function renderCheckinMonth() {
+        const box = document.getElementById('checkinMonthBox');
+        if (!box) return;
+        const y = checkinYear, m = checkinMonth;
+        const first = new Date(y, m, 1);
+        const startDay = first.getDay(); // 0=日
+        const daysInMonth = new Date(y, m + 1, 0).getDate();
+        const label = document.getElementById('checkinMonthLabel');
+        if (label) label.innerText = `${y}年${m + 1}月`;
+        // 年份/月份下拉
+        const ySel = document.getElementById('checkinYearSel');
+        const mSel = document.getElementById('checkinMonthSel');
+        if (ySel) {
+            let yOpts = '';
+            for (let yy = y - 2; yy <= y + 1; yy++) yOpts += `<option value="${yy}" ${yy === y ? 'selected' : ''}>${yy}年</option>`;
+            ySel.innerHTML = yOpts; ySel.value = y;
+        }
+        if (mSel) {
+            let mOpts = '';
+            for (let mm = 1; mm <= 12; mm++) mOpts += `<option value="${mm}" ${mm === (m + 1) ? 'selected' : ''}>${mm}月</option>`;
+            mSel.innerHTML = mOpts; mSel.value = m + 1;
+        }
+        // 汇总动作库全部主题组
+        const themes = checkinThemeList();
+        const total = themes.length;
+        // 运动时长映射
+        const emap = {};
+        (state.health.exerciseMinutes || []).forEach(x => { if (x.min) emap[x.date] = parseFloat(x.min); });
+        let html = `<div style="display:grid; grid-template-columns:repeat(7,1fr); gap:4px;">`;
+        ['日','一','二','三','四','五','六'].forEach(d => { html += `<div style="text-align:center; font-size:10px; color:var(--text-muted); padding:2px 0;">${d}</div>`; });
+        for (let i = 0; i < startDay; i++) html += `<div></div>`;
+        for (let d = 1; d <= daysInMonth; d++) {
+            const ds = `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+            const acts = (state.health.checkinLib && state.health.checkinLib[ds]) || {};
+            const done = themes.filter(t => acts[t.part]).length;
+            const ratio = total ? Math.round(done / total * 100) : 0;
+            const bg = ratio >= 100 ? 'var(--accent-sage-bg)' : ratio > 0 ? 'rgba(60,167,107,0.12)' : 'var(--bg-main)';
+            const emin = emap[ds];
+            const eminTxt = emin != null ? `${emin}分` : '—';
+            html += `<div onclick="toggleCheckinDay('${ds}')" title="${ds} 完成 ${done}/${total} 个主题 · 运动 ${emin != null ? emin : 0} 分" style="cursor:pointer; border:1px solid var(--card-border); border-radius:6px; padding:5px 2px; text-align:center; background:${bg}; min-height:54px;">
+                <div style="font-size:11px; font-weight:700; color:var(--text-primary);">${d}</div>
+                <div style="font-size:8.5px; color:var(--accent-sage); font-weight:700; line-height:1.1;">${done}/${total}</div>
+                <div style="font-size:8.5px; color:var(--accent-warm); font-weight:700; line-height:1.1; margin-top:1px;">🏃 ${eminTxt}</div>
+            </div>`;
+        }
+        html += `</div>`;
+        box.innerHTML = html;
+    }
+    function toggleCheckinDay(dateStr) {
+        state.health.checkinLib = state.health.checkinLib || {};
+        if (!state.health.checkinLib[dateStr]) state.health.checkinLib[dateStr] = {};
+        // 按主题组全勾/全清（再次点击取消）
+        const themes = checkinThemeList();
+        const cur = state.health.checkinLib[dateStr];
+        const doneAll = themes.every(t => cur[t.part]);
+        if (doneAll) {
+            state.health.checkinLib[dateStr] = {};
+        } else {
+            themes.forEach(t => { state.health.checkinLib[dateStr][t.part] = true; });
+        }
+        saveState(); renderCheckinTables();
+        showToast(doneAll ? '已取消当日打卡' : `已勾选 ${themes.length} 个主题`);
     }
 
-    // —— 健身页独立循环计时器 ——
-    var fitTimerState = { roundsDone:0, running:false, timerId:null, phase:'idle', remain:0, workSec:60, restSec:30, rounds:4, log:[] };
-    function fmtMMSS(s){ const m=Math.floor(s/60), sec=s%60; return String(m).padStart(2,'0')+':'+String(sec).padStart(2,'0'); }
-    function updateFitTimerUI() {
-        const ph=document.getElementById('fitTimerPhase'), cd=document.getElementById('fitTimerCount'),
-              rd=document.getElementById('fitTimerRound'), lg=document.getElementById('fitTimerLog'),
-              sb=document.getElementById('fitTimerStartBtn'), pb=document.getElementById('fitTimerPauseBtn');
-        if(!ph||!cd) return;
-        ph.innerText = fitTimerState.phase==='idle'?'准备开始':(fitTimerState.phase==='work'?'🏋️ 运动中…':(fitTimerState.phase==='done'?'🎉 全部完成':'😌 休息中…'));
-        cd.innerText = fmtMMSS(Math.max(0, fitTimerState.remain));
-        rd.innerText = `已完成 ${fitTimerState.roundsDone} / ${fitTimerState.rounds} 组`;
-        lg.innerText = fitTimerState.log.slice(-2).join(' ｜ ') || '点击「开始」后，每段时间结束会自动提醒下一个动作。';
-        if(sb) sb.innerText = fitTimerState.running ? '▶ 继续' : '▶ 开始';
-        if(pb) pb.style.display = fitTimerState.running ? 'inline-block' : 'none';
-        // 同步组数到全局（供运动打卡弹窗读取）
-        healthTimerState.roundsDone = fitTimerState.roundsDone;
+    /* ===== 动作库打卡表：周/月可切换视图 ===== */
+    let checkinViewMode = 'month';   // 'week' | 'month'
+    let checkinWeekOffset = 0;       // 0=本周，负=过去，正=未来
+
+    function switchCheckinView(mode) {
+        checkinViewMode = mode;
+        const wv = document.getElementById('checkinWeekView');
+        const mv = document.getElementById('checkinMonthView');
+        if (wv) wv.hidden = checkinViewMode !== 'week';
+        if (mv) mv.hidden = checkinViewMode !== 'month';
+        const tw = document.getElementById('checkinTabWeek');
+        const tm = document.getElementById('checkinTabMonth');
+        if (tw) tw.style.fontWeight = checkinViewMode === 'week' ? '700' : '';
+        if (tm) tm.style.fontWeight = checkinViewMode === 'month' ? '700' : '';
+        if (checkinViewMode === 'week') renderCheckinWeekView();
+        else renderCheckinMonth();
     }
-    function stopFitTimerInterval(){ if(fitTimerState.timerId){ clearInterval(fitTimerState.timerId); fitTimerState.timerId=null; } fitTimerState.running=false; }
-    function fitBeepOrNotify(msg){ try { if(window.beep) window.beep(); } catch(e){} if('Notification' in window && Notification.permission==='granted'){ try{ new Notification(msg); }catch(e){} } }
-    function startFitnessTimer() {
-        if(fitTimerState.running) return;
-        fitTimerState.workSec = parseInt(document.getElementById('fitWorkSec').value,10)||60;
-        fitTimerState.restSec = parseInt(document.getElementById('fitRestSec').value,10)||30;
-        fitTimerState.rounds = parseInt(document.getElementById('fitRounds').value,10)||4;
-        if(fitTimerState.phase==='idle' || fitTimerState.phase==='done'){
-            fitTimerState.phase='work'; fitTimerState.remain=fitTimerState.workSec; fitTimerState.roundsDone=0; fitTimerState.log=[];
+
+    function checkinWeekNav(offset) {
+        if (offset === 0) checkinWeekOffset = 0;
+        else checkinWeekOffset += offset;
+        renderCheckinWeekView();
+    }
+
+    function onCheckinMonthSelect() {
+        const ySel = document.getElementById('checkinYearSel');
+        const mSel = document.getElementById('checkinMonthSel');
+        if (ySel && mSel) {
+            checkinYear = Number(ySel.value);
+            checkinMonth = Number(mSel.value) - 1;
+            renderCheckinMonth();
         }
-        fitTimerState.running=true; updateFitTimerUI();
-        fitBeepOrNotify('开始第 '+(fitTimerState.roundsDone+1)+' 组运动');
-        fitTimerState.timerId = setInterval(() => {
-            fitTimerState.remain--;
-            if(fitTimerState.remain <= 0){
-                if(fitTimerState.phase==='work'){
-                    fitTimerState.roundsDone++;
-                    fitTimerState.log.push(new Date().toLocaleTimeString('zh-CN')+' 完成第'+fitTimerState.roundsDone+'组');
-                    if(fitTimerState.roundsDone >= fitTimerState.rounds){
-                        fitTimerState.phase='done'; fitTimerState.remain=0; stopFitTimerInterval();
-                        fitBeepOrNotify('🎉 全部 '+fitTimerState.rounds+' 组完成！可存入今日打卡'); updateFitTimerUI(); return;
-                    }
-                    fitTimerState.phase='rest'; fitTimerState.remain=fitTimerState.restSec;
-                    fitBeepOrNotify('运动结束，休息 '+fitTimerState.restSec+' 秒');
-                } else if(fitTimerState.phase==='rest'){
-                    fitTimerState.phase='work'; fitTimerState.remain=fitTimerState.workSec;
-                    fitBeepOrNotify('休息结束，开始第 '+(fitTimerState.roundsDone+1)+' 组');
-                }
-            }
-            updateFitTimerUI();
-        }, 1000);
     }
-    function pauseFitnessTimer(){ if(fitTimerState.running){ stopFitTimerInterval(); updateFitTimerUI(); } }
-    function skipFitnessPhase(){
-        if(fitTimerState.phase!=='work' && fitTimerState.phase!=='rest') return;
-        if(fitTimerState.phase==='work'){
-            fitTimerState.roundsDone++; fitTimerState.log.push('跳过→完成第'+fitTimerState.roundsDone+'组');
-            if(fitTimerState.roundsDone>=fitTimerState.rounds){ fitTimerState.phase='done'; fitTimerState.remain=0; stopFitTimerInterval(); fitBeepOrNotify('已完成全部'); updateFitTimerUI(); return; }
-            fitTimerState.phase='rest'; fitTimerState.remain=fitTimerState.restSec; fitBeepOrNotify('跳到休息');
-        } else if(fitTimerState.phase==='rest'){ fitTimerState.phase='work'; fitTimerState.remain=fitTimerState.workSec; fitBeepOrNotify('跳到运动'); }
-        updateFitTimerUI();
+
+    function renderCheckinTables() {
+        if (!document.getElementById('checkinMonthBox') && !document.getElementById('checkinWeekBody')) return;
+        const wv = document.getElementById('checkinWeekView');
+        const mv = document.getElementById('checkinMonthView');
+        if (wv) wv.hidden = checkinViewMode !== 'week';
+        if (mv) mv.hidden = checkinViewMode !== 'month';
+        const tw = document.getElementById('checkinTabWeek');
+        const tm = document.getElementById('checkinTabMonth');
+        if (tw) tw.style.fontWeight = checkinViewMode === 'week' ? '700' : '';
+        if (tm) tm.style.fontWeight = checkinViewMode === 'month' ? '700' : '';
+        if (checkinViewMode === 'week') renderCheckinWeekView();
+        else renderCheckinMonth();
     }
-    function resetFitnessTimer(){
-        stopFitTimerInterval();
-        fitTimerState = { roundsDone:0, running:false, timerId:null, phase:'idle', remain:0, workSec:60, restSec:30, rounds:4, log:[] };
-        healthTimerState.roundsDone = 0;
-        updateFitTimerUI();
+
+    function renderCheckinWeekView() {
+        const wk = getWeekDates(checkinWeekOffset);
+        const wkLabel = document.getElementById('checkinWeekLabel');
+        if (wkLabel) {
+            const s = new Date(wk[0]), e = new Date(wk[6]);
+            wkLabel.textContent = `${s.getMonth()+1}/${s.getDate()} – ${e.getMonth()+1}/${e.getDate()}（第${getISOWeek(new Date(wk[3]))}周）`;
+        }
+        const wHeader = document.getElementById('checkinWeekHeader');
+        const wBody = document.getElementById('checkinWeekBody');
+        if (!wHeader || !wBody) return;
+        const wkNames = ['一','二','三','四','五','六','日'];
+        const themes = checkinThemeList();
+        wHeader.innerHTML = `<th>动作库主题</th>` + wk.map((d,i) => `<th>${wkNames[i]}<br>${d.slice(5)}</th>`).join('') + `<th>操作</th>`;
+        wBody.innerHTML = themes.map(t => {
+            let cells = '';
+            wk.forEach(d => {
+                const acts = (state.health.checkinLib && state.health.checkinLib[d]) || {};
+                const checked = !!acts[t.part];
+                cells += `<td style="text-align:center;"><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleCheckinThemeDay('${t.part}','${d}')"></td>`;
+            });
+            return `<tr>
+                <td style="font-weight:600; text-align:left; padding-left:10px;">${t.name}</td>
+                ${cells}
+                <td><button class="btn btn-secondary" style="font-size:10px; padding:2px 6px;" onclick="editCheckinTheme('${t.part}')">编辑</button></td>
+            </tr>`;
+        }).join('') || '<tr><td colspan="9" style="color:var(--text-muted);">暂无动作库主题</td></tr>';
     }
-    // 编辑/删除动作后，同步刷新健身页动作库容器
-    const _fitOrigSaveExLib = saveExLib;
-    saveExLib = function(){ _fitOrigSaveExLib.apply(this, arguments); if(document.getElementById('fitExerciseLibBox')) renderFitExerciseLib(currentFitExPart); };
-    const _fitOrigDeleteExLib = deleteExLib;
-    deleteExLib = function(part, id){ _fitOrigDeleteExLib.apply(this, arguments); if(document.getElementById('fitExerciseLibBox')) renderFitExerciseLib(currentFitExPart); };
+
+    function toggleCheckinThemeDay(part, dateStr) {
+        state.health.checkinLib = state.health.checkinLib || {};
+        if (!state.health.checkinLib[dateStr]) state.health.checkinLib[dateStr] = {};
+        const cur = state.health.checkinLib[dateStr];
+        if (cur[part]) delete cur[part];
+        else cur[part] = true;
+        saveState(); renderCheckinTables();
+    }
+
+    function editCheckinTheme(part) {
+        // 进入动作库编辑（定位到对应主题组）
+        showToast(`点击下方「动作库」编辑区可管理「${checkinThemeList().find(t=>t.part===part)?.name||part}」主题`);
+    }
 
     function addWeight() {
         document.getElementById('weightDate').value = getTodayStr();
@@ -3379,6 +3225,60 @@ alter publication supabase_realtime add table life_os_sync;</div>
             state.health.weights = (state.health.weights || []).filter(w => w.date !== date);
             saveState(); renderHealthPage(); showToast('已删除');
         }, '删除体重记录');
+    }
+
+    // 喝水记录
+    function addWater() {
+        const today = getTodayStr();
+        const date = document.getElementById('waterDate').value || today;
+        const ml = (parseInt(document.getElementById('waterMl').value, 10) || 0) + 250;
+        state.health.waters = state.health.waters || [];
+        const ex = state.health.waters.find(w => w.date === date);
+        if (ex) ex.ml = (parseInt(ex.ml, 10) || 0) + 250;
+        else state.health.waters.unshift({ date, ml: 250, note: '' });
+        saveState(); renderHealthPage();
+        document.getElementById('waterMl').value = '';
+        showToast('已记一杯 250ml');
+    }
+    function saveWater() {
+        const date = document.getElementById('waterDate').value || getTodayStr();
+        const ml = document.getElementById('waterMl').value;
+        if (!ml) { showToast('请填写饮水量'); return; }
+        state.health.waters = state.health.waters || [];
+        const ex = state.health.waters.find(w => w.date === date);
+        if (ex) ex.ml = ml; else state.health.waters.unshift({ date, ml, note: '' });
+        saveState(); renderHealthPage(); showToast('喝水已记录');
+    }
+    function deleteWater(date) {
+        confirmDelete('删除这条喝水记录吗？', () => {
+            state.health.waters = (state.health.waters || []).filter(w => w.date !== date);
+            saveState(); renderHealthPage(); showToast('已删除');
+        }, '删除喝水记录');
+    }
+
+    // 睡眠记录
+    function addSleep() {
+        document.getElementById('sleepDate').value = getTodayStr();
+        document.getElementById('sleepHours').value = '';
+        document.getElementById('sleepQuality').value = '';
+        showToast('请填写睡眠时长与质量后点「保存」');
+    }
+    function saveSleep() {
+        const date = document.getElementById('sleepDate').value || getTodayStr();
+        const hours = document.getElementById('sleepHours').value;
+        const quality = document.getElementById('sleepQuality').value;
+        if (!hours) { showToast('请填写睡眠时长'); return; }
+        state.health.sleeps = state.health.sleeps || [];
+        const ex = state.health.sleeps.find(s => s.date === date);
+        if (ex) { ex.hours = hours; ex.quality = parseInt(quality, 10) || 0; }
+        else state.health.sleeps.unshift({ date, hours, quality: parseInt(quality, 10) || 0 });
+        saveState(); renderHealthPage(); showToast('睡眠已记录');
+    }
+    function deleteSleep(date) {
+        confirmDelete('删除这条睡眠记录吗？', () => {
+            state.health.sleeps = (state.health.sleeps || []).filter(s => s.date !== date);
+            saveState(); renderHealthPage(); showToast('已删除');
+        }, '删除睡眠记录');
     }
 
     var currentExPart = 'sleep';
@@ -3543,6 +3443,8 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 healthTimerState.log.push(new Date().toLocaleTimeString('zh-CN')+' 完成第'+healthTimerState.roundsDone+'组');
                 if(healthTimerState.roundsDone >= healthTimerState.rounds){
                     healthTimerState.phase='done'; healthTimerState.remain=0; stopTimerInterval();
+                    const min = Math.round(healthTimerState.workSec * healthTimerState.rounds / 60);
+                    recordExerciseMinutes(min);
                     beepOrNotify('🎉 全部 '+healthTimerState.rounds+' 组完成！可存入今日打卡'); updateTimerUI(); return;
                 }
                 healthTimerState.phase='rest'; healthTimerState.remain=healthTimerState.restSec;
@@ -3609,7 +3511,6 @@ alter publication supabase_realtime add table life_os_sync;</div>
         renderMindLiberationPage();
         renderFavoritesPage();
         renderHealthPage();
-        renderFitnessPage();
 
         // 统一为所有任务卡片容器启用长按拖拽排序（顺序同步回 state.tasks）
         ['homeTaskListQ1','homeTaskListQ2','homeTaskListQ3','homeTaskListQ4','stickyTodayTaskList','studyTaskList','dailyTimeSlotsContainer']
@@ -3797,42 +3698,142 @@ alter publication supabase_realtime add table life_os_sync;</div>
         }
     }
 
+    // 打卡表日期单元格：跨日学习(study-cross)的计划日期用浅灰色高亮提示，不默认勾选；手动勾选才计入完成
+    function habitCellHTML(h, d) {
+        const planned = (h.category === 'study-cross') && ((h.plannedDates || []).includes(d));
+        const done = (h.dates || []).includes(d);
+        const bg = planned && !done ? 'background:#eeeeee; box-shadow:inset 0 0 0 1px #bdbdbd;' : '';
+        return `<td style="${bg}"><input type="checkbox" ${done ? 'checked' : ''} onchange="toggleHabitDate('${h.id}', '${d}')"></td>`;
+    }
+
     function renderHabitTables() {
-        const past7 = getPast7Days();
+        // 入口：渲染周视图 + 月视图 + 历史存档
+        renderHabitWeekView();
+        renderHabitMonthView();
+        renderHabitArchive();
+        // 同步 Tab 高亮与显隐
+        const wv = document.getElementById('habitWeekView');
+        const mv = document.getElementById('habitMonthView');
+        if (wv) wv.hidden = habitViewMode !== 'week';
+        if (mv) mv.hidden = habitViewMode !== 'month';
+        const tw = document.getElementById('habitTabWeek');
+        const tm = document.getElementById('habitTabMonth');
+        if (tw) tw.style.fontWeight = habitViewMode === 'week' ? '700' : '';
+        if (tm) tm.style.fontWeight = habitViewMode === 'month' ? '700' : '';
+    }
+
+    function switchHabitView(mode) {
+        habitViewMode = mode;
+        renderHabitTables();
+    }
+
+    function habitWeekNav(offset) {
+        if (offset === 0) habitWeekOffset = 0;
+        else habitWeekOffset += offset;
+        renderHabitWeekView();
+        // 同步显隐
+        const wv = document.getElementById('habitWeekView');
+        const mv = document.getElementById('habitMonthView');
+        if (wv) wv.hidden = habitViewMode !== 'week';
+        if (mv) mv.hidden = habitViewMode !== 'month';
+    }
+
+    function renderHabitWeekView() {
+        const wk = getWeekDates(habitWeekOffset);
+        const wkLabel = document.getElementById('habitMainWeekLabel');
+        if (wkLabel) {
+            const s = new Date(wk[0]), e = new Date(wk[6]);
+            wkLabel.textContent = `${s.getMonth()+1}/${s.getDate()} – ${e.getMonth()+1}/${e.getDate()}（第${getISOWeek(new Date(wk[3]))}周）`;
+        }
         const wHeader = document.getElementById('habitWeeklyHeader');
         const wBody = document.getElementById('habitWeeklyBody');
-        wHeader.innerHTML = `<th>习惯项目</th>` + past7.map(d => `<th>${d.slice(5)}</th>`).join('') + `<th>操作</th>`;
-        wBody.innerHTML = state.habits.map(h => `
+        if (!wHeader || !wBody) return;
+        const wkNames = ['一','二','三','四','五','六','日'];
+        wHeader.innerHTML = `<th>习惯项目</th>` + wk.map((d,i) => `<th>${wkNames[i]}<br>${d.slice(5)}</th>`).join('') + `<th>操作</th>`;
+        wBody.innerHTML = (state.habits || []).map(h => `
             <tr>
                 <td style="font-weight:600; text-align:left; padding-left:10px;">${h.name}</td>
-                ${past7.map(d => `<td><input type="checkbox" ${h.dates.includes(d) ? 'checked' : ''} onchange="toggleHabitDate('${h.id}', '${d}')"></td>`).join('')}
+                ${wk.map(d => habitCellHTML(h, d)).join('')}
                 <td><button class="btn btn-secondary" style="font-size:10px; padding:2px 6px;" onclick="editHabit('${h.id}')">修改</button><button class="btn btn-secondary" style="font-size:10px; padding:2px 6px;" onclick="deleteHabit('${h.id}')">删除</button></td>
             </tr>
-        `).join('');
+        `).join('') || '<tr><td colspan="9" style="color:var(--text-muted);">暂无习惯</td></tr>';
+    }
 
+    function habitMonthNav(offset) {
+        if (!habitMainMonth) { const n = new Date(); habitMainMonth = `${n.getFullYear()}-${String(n.getMonth()+1).padStart(2,'0')}`; }
+        let [y, m] = habitMainMonth.split('-').map(Number);
+        m += offset;
+        if (m < 1) { m = 12; y--; }
+        if (m > 12) { m = 1; y++; }
+        habitMainMonth = `${y}-${String(m).padStart(2,'0')}`;
+        renderHabitMonthView();
+    }
+
+    function onHabitMonthSelect() {
+        const ySel = document.getElementById('habitMonthYearSel');
+        const mSel = document.getElementById('habitMonthSel');
+        if (ySel && mSel) {
+            habitMainMonth = `${ySel.value}-${mSel.value}`;
+            renderHabitMonthView();
+        }
+    }
+
+    function renderHabitMonthView() {
         const now = new Date();
-        const year = now.getFullYear(), month = now.getMonth();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
-        document.getElementById('habitMonthLabel').innerText = `${year}年 ${month+1}月 全月打卡表`;
-
+        if (!habitMainMonth) habitMainMonth = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+        // 年份/月份下拉（基于数据范围动态生成，至少覆盖到当前月）
+        const ySel = document.getElementById('habitMonthYearSel');
+        const mSel = document.getElementById('habitMonthSel');
+        const minDate = (state.habits || []).reduce((min, h) => {
+            (h.dates || []).forEach(d => { if (d < min) min = d; });
+            (h.plannedDates || []).forEach(d => { if (d < min) min = d; });
+            return min;
+        }, habitMainMonth);
+        let [my, mm] = minDate.split('-').map(Number);
+        const endY = now.getFullYear(), endM = now.getMonth() + 1;
+        // 年份选项
+        if (ySel) {
+            let yOpts = '';
+            for (let y = my; y <= endY; y++) yOpts += `<option value="${y}" ${String(y) === habitMainMonth.split('-')[0] ? 'selected' : ''}>${y}年</option>`;
+            ySel.innerHTML = yOpts;
+            ySel.value = habitMainMonth.split('-')[0];
+        }
+        // 月份选项
+        if (mSel) {
+            let mOpts = '';
+            for (let m = 1; m <= 12; m++) mOpts += `<option value="${String(m).padStart(2,'0')}" ${String(m).padStart(2,'0') === habitMainMonth.split('-')[1] ? 'selected' : ''}>${m}月</option>`;
+            mSel.innerHTML = mOpts;
+            mSel.value = habitMainMonth.split('-')[1];
+        }
+        const label = document.getElementById('habitMainMonthLabel');
+        if (label) label.textContent = `${habitMainMonth.split('-')[0]}年${Number(habitMainMonth.split('-')[1])}月 全月打卡`;
+        const [ay, am] = habitMainMonth.split('-').map(Number);
+        const daysInMonth = new Date(ay, am, 0).getDate();
         const mHeader = document.getElementById('habitMonthlyHeader');
+        const mWeekday = document.getElementById('habitMonthlyWeekdayHeader');
         const mBody = document.getElementById('habitMonthlyBody');
-
-        let headHTML = `<th>习惯项目</th>`;
-        for(let day=1; day<=daysInMonth; day++) headHTML += `<th>${day}</th>`;
-        mHeader.innerHTML = headHTML;
-
-        mBody.innerHTML = state.habits.map(h => {
+        if (!mHeader || !mBody) return;
+        // 第一行：日期数字
+        let head = `<th>习惯项目</th>`;
+        for (let day = 1; day <= daysInMonth; day++) head += `<th>${day}</th>`;
+        mHeader.innerHTML = head;
+        // 第二行：周几简写（一二三四五六日）
+        const wkNames = ['一','二','三','四','五','六','日'];
+        let wkRow = `<th></th>`;
+        for (let day = 1; day <= daysInMonth; day++) {
+            const ds = new Date(ay, am - 1, day);
+            wkRow += `<th style="font-size:10px; color:var(--text-muted); font-weight:500;">${wkNames[ds.getDay() === 0 ? 6 : ds.getDay() - 1]}</th>`;
+        }
+        if (mWeekday) mWeekday.innerHTML = wkRow;
+        mBody.innerHTML = (state.habits || []).map(h => {
             let rowHTML = `<tr><td style="font-weight:600; text-align:left; padding-left:10px;">${h.name}</td>`;
-            for(let day=1; day<=daysInMonth; day++) {
-                const dateStr = `${year}-${String(month+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-                rowHTML += `<td><input type="checkbox" ${h.dates.includes(dateStr) ? 'checked' : ''} onchange="toggleHabitDate('${h.id}', '${dateStr}')"></td>`;
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dateStr = `${ay}-${String(am).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+                rowHTML += habitCellHTML(h, dateStr);
             }
             rowHTML += `</tr>`;
             return rowHTML;
-        }).join('');
-
-        renderHabitArchive();
+        }).join('') || '<tr><td colspan="40" style="color:var(--text-muted);">暂无习惯</td></tr>';
     }
 
     function toggleHabitDate(habitId, dateStr) {
@@ -3857,6 +3858,11 @@ alter publication supabase_realtime add table life_os_sync;</div>
     /* ===== 周 / 月打卡历史存档（时间维度，可跨周跨月查阅） ===== */
     let habitArchiveWeekOffset = 0;   // 0=本周，负=过去，正=未来
     let habitArchiveMonth = null;     // 'YYYY-MM' 或 null=当前月
+
+    /* ===== 每日计划主打卡表：周/月可切换视图 ===== */
+    let habitViewMode = 'week';       // 'week' | 'month'
+    let habitWeekOffset = 0;          // 主视图周偏移，0=本周
+    let habitMainMonth = null;        // 主视图月 'YYYY-MM' 或 null=当前月
 
     function startOfWeek(date) {
         // 周一为一周起点
@@ -3901,7 +3907,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 const rate = Math.round((hit / 7) * 100);
                 return `<tr>
                     <td style="font-weight:600; text-align:left; padding-left:10px;">${h.name}</td>
-                    ${wk.map(d => `<td><input type="checkbox" ${h.dates.includes(d) ? 'checked' : ''} onchange="toggleHabitDate('${h.id}', '${d}')"></td>`).join('')}
+                    ${wk.map(d => habitCellHTML(h, d)).join('')}
                     <td style="font-weight:700; color:var(--accent-sage);">${rate}%</td>
                 </tr>`;
             }).join('') || '<tr><td colspan="9" style="color:var(--text-muted);">暂无习惯</td></tr>';
@@ -3942,7 +3948,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 for (let day = 1; day <= daysInMonth; day++) {
                     const ds = `${ay}-${String(am).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
                     if (h.dates.includes(ds)) hit++;
-                    row += `<td><input type="checkbox" ${h.dates.includes(ds) ? 'checked' : ''} onchange="toggleHabitDate('${h.id}', '${ds}')"></td>`;
+                    row += habitCellHTML(h, ds);
                 }
                 row += `<td style="font-weight:700; color:var(--accent-sage);">${Math.round((hit/daysInMonth)*100)}%</td></tr>`;
                 return row;
@@ -4656,7 +4662,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         const planDate = plan.date;
         if (dueDate <= planDate) return; // 未跨日，不汇入
         state.habits = state.habits || [];
-        const name = `📚 跨日学习：${plan.title}（${plan.start || ''}~${plan.dueTime || ''}）`;
+        const name = `${plan.title}（${plan.start || ''}~${plan.dueTime || ''}）`;
         // 完整覆盖日期（含起始日到截止日每天），便于周/月打卡表逐日标记
         const coverDates = [];
         let cur = planDate;
@@ -4664,11 +4670,12 @@ alter publication supabase_realtime add table life_os_sync;</div>
         // 避免重复：按来源 plan.id 标记
         const exist = state.habits.find(h => h.srcPlanId === plan.id);
         if (exist) {
-            coverDates.forEach(d => { if (!exist.dates.includes(d)) exist.dates.push(d); });
+            exist.plannedDates = exist.plannedDates || [];
+            coverDates.forEach(d => { if (!exist.plannedDates.includes(d)) exist.plannedDates.push(d); });
             exist.name = name;
             return;
         }
-        state.habits.push({ id: 'h_cross_' + plan.id, name, category: 'study-cross', srcPlanId: plan.id, dates: coverDates });
+        state.habits.push({ id: 'h_cross_' + plan.id, name, category: 'study-cross', srcPlanId: plan.id, dates: [], plannedDates: coverDates });
     }
     function deleteStudyPlan(id) {
         confirmDelete('确定删除该学习时段计划吗？', () => {
@@ -4755,6 +4762,35 @@ alter publication supabase_realtime add table life_os_sync;</div>
         };
         return map[code] || '🌡️';
     }
+    /* ===== 日记心情：表情多选（最多 3 个） ===== */
+    const MOOD_EMOJIS = [
+        { e: '😊', t: '开心' }, { e: '😡', t: '生气' }, { e: '😢', t: '伤心' },
+        { e: '🏖️', t: '出游' }, { e: '🍜', t: '美食' }, { e: '😍', t: '喜爱' },
+        { e: '😌', t: '平静' }, { e: '🔥', t: '高效' }, { e: '🌿', t: '治愈' },
+        { e: '🧠', t: '思考' }, { e: '😴', t: '疲累' }, { e: '🥳', t: '庆祝' },
+        { e: '😰', t: '焦虑' }, { e: '💪', t: '充实' }, { e: '🤒', t: '不适' }
+    ];
+    let selectedMoods = []; // 当前选中的 emoji（最多 3 个）
+
+    function renderMoodPicker() {
+        const box = document.getElementById('diaryMoodPicker');
+        if (!box) return;
+        box.innerHTML = MOOD_EMOJIS.map(m => {
+            const on = selectedMoods.includes(m.e);
+            return `<button type="button" class="mood-chip${on ? ' active' : ''}" title="${m.t}" onclick="toggleMood('${m.e}')">${m.e}</button>`;
+        }).join('');
+    }
+
+    function toggleMood(emoji) {
+        const i = selectedMoods.indexOf(emoji);
+        if (i > -1) selectedMoods.splice(i, 1);
+        else {
+            if (selectedMoods.length >= 3) return showToast('最多选择 3 个心情表情');
+            selectedMoods.push(emoji);
+        }
+        renderMoodPicker();
+    }
+
     let SZ_WEATHER_SNAPSHOT = null; // 缓存最新一次深圳天气快照，供日记/灵感条目记录
     async function fetchShenzhenWeather() {
         const box = document.getElementById('diaryWeather');
@@ -4789,22 +4825,22 @@ alter publication supabase_realtime add table life_os_sync;</div>
     }
 
     function addDiaryEntry() {
-        const mood = document.getElementById('diaryMoodSelect').value;
         const moodNote = document.getElementById('diaryMoodInput').value.trim();
         const key = document.getElementById('diaryKeyInput').value.trim();
         const happy = document.getElementById('diaryHappyInput').value.trim();
         const idea = document.getElementById('diaryIdeaInput').value.trim();
-        if(!moodNote && !key && !happy && !idea) return showToast("请至少填写一个板块！");
+        if(!moodNote && !key && !happy && !idea && selectedMoods.length === 0) return showToast("请至少填写一个板块！");
         const weather = currentShenzhenWeatherLabel();
         const now = new Date().toISOString();
         const date = getTodayStr();
-        const content = `💗 心情：${moodNote}\n🎯 要事：${key}\n🌟 幸福：${happy}\n💡 灵感：${idea}`;
+        const mood = selectedMoods.join(' ') || (selectedMoods[0] || '');
+        const content = `💗 心情：${moodNote}${selectedMoods.length ? ' ' + selectedMoods.join(' ') : ''}\n🎯 要事：${key}\n🌟 幸福：${happy}\n💡 灵感：${idea}`;
 
         // 修改模式：原地更新当前条目，不新增、不生成新归档
         if (editingDiaryId) {
             const d = (state.diaries || []).find(x => x.id === editingDiaryId);
             if (d) {
-                d.mood = mood; d.weather = weather;
+                d.mood = mood; d.moods = selectedMoods.slice(); d.weather = weather;
                 d.moodNote = moodNote; d.key = key; d.happy = happy; d.idea = idea;
                 d.content = content;
                 d.updatedAt = now;
@@ -4831,7 +4867,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         // 新增模式：主日记（四板块）
         state.diaries.unshift({
             id: 'd_' + Date.now(), type: state.currentDiaryType, date,
-            mood, weather,
+            mood, moods: selectedMoods.slice(), weather,
             moodNote, key, happy, idea,
             content,
             createdAt: now
@@ -4852,6 +4888,170 @@ alter publication supabase_realtime add table life_os_sync;</div>
         ['diaryMoodInput','diaryKeyInput','diaryHappyInput','diaryIdeaInput'].forEach(id => {
             const el = document.getElementById(id); if (el) el.value = '';
         });
+        selectedMoods = [];
+        renderMoodPicker();
+    }
+
+    /* ===== 月历心情状态记录 + 历史存档 ===== */
+    let moodCalYear = null, moodCalMonth = null; // 当前月历展示的 年/月(1-12)
+    let moodViewMode = 'month'; // 'week' | 'month'
+    let moodWeekOffset = 0;     // 周视图偏移（0=本周）
+
+    function switchMoodView(mode) {
+        moodViewMode = mode;
+        const wv = document.getElementById('moodWeekView');
+        const mv = document.getElementById('moodMonthView');
+        if (wv) wv.hidden = (mode !== 'week');
+        if (mv) mv.hidden = (mode !== 'month');
+        document.getElementById('moodTabWeek').classList.toggle('active', mode === 'week');
+        document.getElementById('moodTabMonth').classList.toggle('active', mode === 'month');
+        renderMoodCalendar();
+    }
+
+    function moodWeekNav(offset) {
+        if (offset === 0) moodWeekOffset = 0;
+        else moodWeekOffset += offset;
+        renderMoodCalendar();
+    }
+
+    function renderMoodWeekView() {
+        const wk = getWeekDates(moodWeekOffset);
+        const wkLabel = document.getElementById('moodWeekLabel');
+        if (wkLabel) wkLabel.textContent = `${wk[0].label} ~ ${wk[6].label}`;
+        const head = document.getElementById('moodWeekHeader');
+        if (head) {
+            let h = '<th style="width:80px;">日期</th><th>日记心情</th>';
+            head.innerHTML = h;
+        }
+        const body = document.getElementById('moodWeekBody');
+        if (!body) return;
+        // 汇总本周每日表情（合并当天所有日记）
+        const moodByDate = {};
+        (state.diaries || []).forEach(d => {
+            const emos = (d.moods && d.moods.length) ? d.moods : (d.mood ? [d.mood] : []);
+            moodByDate[d.date] = (moodByDate[d.date] || []).concat(emos);
+        });
+        let rows = '';
+        wk.forEach(day => {
+            const ds = day;
+            const emos = moodByDate[ds] || [];
+            const emoStr = emos.length ? emos.slice(0, 3).join('') : '';
+            const isToday = ds === getTodayStr();
+            const click = emos.length ? `onclick="showMoodDetail('${ds}')" style="cursor:pointer;"` : '';
+            rows += `<tr class="${isToday ? 'today' : ''} ${emos.length ? 'has-task' : ''}" ${click}>
+                <td style="white-space:nowrap; font-weight:600;">${ds.slice(5)}</td>
+                <td style="font-size:18px; text-align:center;">${emoStr || '<span style="color:var(--text-muted); font-size:13px;">—</span>'}</td>
+            </tr>`;
+        });
+        body.innerHTML = rows;
+    }
+
+    function renderMoodCalendar() {
+        const mv = document.getElementById('moodMonthView');
+        const wv = document.getElementById('moodWeekView');
+        if (mv) mv.hidden = (moodViewMode !== 'month');
+        if (wv) wv.hidden = (moodViewMode !== 'week');
+        const tw = document.getElementById('moodTabWeek');
+        const tm = document.getElementById('moodTabMonth');
+        if (tw) tw.classList.toggle('active', moodViewMode === 'week');
+        if (tm) tm.classList.toggle('active', moodViewMode === 'month');
+        if (moodViewMode === 'week') { renderMoodWeekView(); return; }
+        const now = new Date();
+        if (moodCalYear === null) moodCalYear = now.getFullYear();
+        if (moodCalMonth === null) moodCalMonth = now.getMonth() + 1;
+        // 年份/月份下拉
+        const ySel = document.getElementById('moodCalYearSel');
+        const mSel = document.getElementById('moodCalMonthSel');
+        const minDate = (state.diaries || []).reduce((min, d) => d.date < min ? d.date : min, `${moodCalYear}-${String(moodCalMonth).padStart(2,'0')}-01`);
+        let [my] = minDate.split('-').map(Number);
+        if (ySel) {
+            let yOpts = '';
+            for (let y = my; y <= now.getFullYear(); y++) yOpts += `<option value="${y}" ${y === moodCalYear ? 'selected' : ''}>${y}年</option>`;
+            ySel.innerHTML = yOpts; ySel.value = moodCalYear;
+        }
+        if (mSel) {
+            let mOpts = '';
+            for (let m = 1; m <= 12; m++) mOpts += `<option value="${m}" ${m === moodCalMonth ? 'selected' : ''}>${m}月</option>`;
+            mSel.innerHTML = mOpts; mSel.value = moodCalMonth;
+        }
+        const stat = document.getElementById('moodCalStat');
+        if (stat) stat.textContent = `${moodCalYear}年${moodCalMonth}月`;
+        // 汇总该月每日心情（合并当天所有日记的 moods）
+        const moodByDate = {};
+        (state.diaries || []).forEach(d => {
+            if (d.date.startsWith(`${moodCalYear}-${String(moodCalMonth).padStart(2,'0')}`)) {
+                const emos = (d.moods && d.moods.length) ? d.moods : (d.mood ? [d.mood] : []);
+                moodByDate[d.date] = (moodByDate[d.date] || []).concat(emos);
+            }
+        });
+        const daysInMonth = new Date(moodCalYear, moodCalMonth, 0).getDate();
+        const firstDayIndex = new Date(moodCalYear, moodCalMonth - 1, 1).getDay(); // 周日起点（与学习时段月历一致）
+        const wkNames = ['日','一','二','三','四','五','六'];
+        let html = '';
+        wkNames.forEach(w => html += `<div class="calendar-weekhead">${w}</div>`);
+        for (let i = 0; i < firstDayIndex; i++) html += `<div class="calendar-cell empty"></div>`;
+        for (let day = 1; day <= daysInMonth; day++) {
+            const ds = `${moodCalYear}-${String(moodCalMonth).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+            const emos = moodByDate[ds] || [];
+            const isToday = ds === getTodayStr();
+            const hasItems = emos.length > 0;
+            const emoStr = hasItems ? emos.slice(0, 3).join('') : '';
+            html += `<div class="calendar-cell ${hasItems ? 'has-task' : ''} ${isToday ? 'today' : ''}" ${hasItems ? `onclick="showMoodDetail('${ds}')"` : ''}>
+                <div class="calendar-num">${day}</div>
+                ${emoStr ? `<div class="calendar-task-badge">${emoStr}</div>` : ''}
+            </div>`;
+        }
+        const grid = document.getElementById('moodCalGrid');
+        if (grid) grid.innerHTML = html;
+    }
+
+    function moodCalNav(offset) {
+        moodCalMonth += offset;
+        if (moodCalMonth < 1) { moodCalMonth = 12; moodCalYear--; }
+        if (moodCalMonth > 12) { moodCalMonth = 1; moodCalYear++; }
+        renderMoodCalendar();
+    }
+
+    function onMoodCalSelect() {
+        const ySel = document.getElementById('moodCalYearSel');
+        const mSel = document.getElementById('moodCalMonthSel');
+        if (ySel && mSel) {
+            moodCalYear = Number(ySel.value);
+            moodCalMonth = Number(mSel.value);
+            renderMoodCalendar();
+        }
+    }
+
+    function showMoodDetail(dateStr) {
+        const list = (state.diaries || []).filter(d => d.date === dateStr);
+        if (!list.length) return;
+        const blocks = list.map(d => {
+            const emos = (d.moods && d.moods.length) ? d.moods.join(' ') : (d.mood || '');
+            return `<div class="entry-card" style="margin-bottom:10px;">
+                <div class="entry-header" style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">
+                    <span style="font-size:18px;">${emos}</span>
+                    <span style="color:var(--text-muted); font-size:11px;">${d.weather || ''}</span>
+                    <span style="color:var(--text-muted); font-size:11px;">${new Date(d.createdAt).toLocaleTimeString()}</span>
+                    <span style="color:var(--text-muted); font-size:11px;">${d.type === 'work' ? '工作' : '生活'}</span>
+                </div>
+                <div class="entry-body" style="white-space:pre-wrap; font-size:12.5px;">${escapeHtml(d.content)}</div>
+            </div>`;
+        }).join('');
+        const mask = document.createElement('div');
+        mask.className = 'mood-detail-mask';
+        mask.innerHTML = `<div class="mood-detail-box">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <div style="font-weight:700; font-size:15px;">${dateStr} 日记详情</div>
+                <button class="btn btn-secondary" style="font-size:12px; padding:4px 10px;" onclick="this.closest('.mood-detail-mask').remove()">关闭</button>
+            </div>
+            ${blocks}
+        </div>`;
+        mask.addEventListener('click', (ev) => { if (ev.target === mask) mask.remove(); });
+        document.body.appendChild(mask);
+    }
+
+    function escapeHtml(s) {
+        return (s || '').replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]));
     }
 
     function deleteDiaryEntry(id) {
@@ -4869,7 +5069,8 @@ alter publication supabase_realtime add table life_os_sync;</div>
         editingDiaryId = id;
         // 切到对应分类
         if (d.type !== state.currentDiaryType) { switchDiaryType(d.type); }
-        document.getElementById('diaryMoodSelect').value = d.mood || '😊 充实';
+        selectedMoods = (d.moods && d.moods.length) ? d.moods.slice() : (d.mood ? [d.mood] : []);
+        renderMoodPicker();
         document.getElementById('diaryMoodInput').value = d.moodNote || '';
         document.getElementById('diaryKeyInput').value = d.key || '';
         document.getElementById('diaryHappyInput').value = d.happy || '';
@@ -4889,6 +5090,8 @@ alter publication supabase_realtime add table life_os_sync;</div>
 
     function renderDiaryPage() {
         fetchShenzhenWeather(); // 打开日记页自动带出当日深圳天气（图标）
+        renderMoodPicker(); // 初始化心情表情选择器
+        renderMoodCalendar(); // 渲染月历心情记录
 
         // 今日日记卡片（可修改）
         const todayBox = document.getElementById('diaryTodayContainer');
@@ -4900,7 +5103,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
                 <div class="entry-card" style="margin-bottom:10px;">
                     <div class="entry-main">
                         <div class="entry-header">
-                            <span>${d.mood || ''}</span>
+                            <span>${(d.moods && d.moods.length ? d.moods.join(' ') : (d.mood || ''))}</span>
                             <span>${d.weather || ''}</span>
                             <span>${new Date(d.createdAt).toLocaleTimeString()}</span>
                         </div>
@@ -4954,7 +5157,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
             <div class="entry-card">
                 <div class="entry-main">
                     <div class="entry-header">
-                        <span>${item.mood || ''}</span>
+                        <span>${(item.moods && item.moods.length ? item.moods.join(' ') : (item.mood || ''))}</span>
                         <span>${item.weather || ''}</span>
                         <span>${new Date(item.createdAt).toLocaleTimeString()}</span>
                     </div>
