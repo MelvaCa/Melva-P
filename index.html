@@ -1661,6 +1661,15 @@
                     <button class="btn btn-secondary" type="button" onclick="forcePullNow()">立即拉取云端</button>
                 </div>
                 <div style="font-size:12.5px; color:var(--text-secondary);" id="syncCfgStatus">当前状态：未连接。</div>
+                <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+                    <button class="btn btn-primary" type="button" onclick="generateSyncQr()">📱 生成同步二维码（手机扫码一键填入）</button>
+                </div>
+                <div id="syncQrBox" style="margin-top:10px;"></div>
+                <div style="font-size:11.5px; color:var(--text-muted); margin-top:6px;">手机用相机/扫码 App 扫上方二维码，会自动打开本应用并填入同步配置、直接连接，无需手动输入一长串 anon key。</div>
+                <div style="margin-top:12px;">
+                    <button class="btn btn-secondary" type="button" onclick="clearFieldMemory()">🧹 清除已记住的输入框（重新填写）</button>
+                    <span style="font-size:11px; color:var(--text-muted); margin-left:8px;">已填过的输入框会自动记住，下次默认填入；点此可清空重填。</span>
+                </div>
                 <details style="margin-top:12px;">
                     <summary style="cursor:pointer; font-size:12.5px; color:var(--accent-sage); font-weight:600;">▶ 在 Supabase 中创建数据表（点击展开 SQL）</summary>
                     <div style="margin-top:10px; background:#2d332a; color:#e8e6e1; padding:12px; border-radius:8px; font-size:11.5px; overflow-x:auto; white-space:pre; font-family:ui-monospace, SFMono-Regular, Menlo, monospace;">-- 在 Supabase SQL Editor 中执行
@@ -7567,7 +7576,46 @@ ${auto}
 <script src="login.js"></script>
 <!-- Supabase 客户端（已本地化打包，不依赖外部 CDN，避免手机端 jsDelivr 被屏蔽） -->
 <script src="supabase-js.min.js"></script>
+<!-- 二维码生成（本地化，用于同步配置扫码一键填入，不依赖外部 CDN） -->
+<script src="qrcode-generator.min.js"></script>
 <!-- 云端实时同步引擎 -->
 <script src="sync-engine.js"></script>
+<!-- 输入框记忆：设置/备份页关键输入框持久化、默认填入、可一键清除 -->
+<script>
+(function () {
+  'use strict';
+  var KEY = 'LIFE_OS_FIELD_MEMORY';
+  var IDS = ['cfgSupabaseUrl','cfgSupabaseKey','cfgSyncKey','apiKeyInput','aiBaseUrlInput','aiModelInput','aiProxyInput','customEngineId','customEngineName','customEngineBase','customEngineModel'];
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save(m) { try { localStorage.setItem(KEY, JSON.stringify(m)); } catch (e) {} }
+  function apply() {
+    var m = load();
+    IDS.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el && !el.value && m[id] != null && m[id] !== '') el.value = m[id];
+    });
+  }
+  function bind() {
+    var m = load();
+    IDS.forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var h = function () { m[id] = el.value; save(m); };
+      el.addEventListener('input', h);
+      el.addEventListener('change', h);
+      if (el.value) m[id] = el.value;
+    });
+    save(m);
+  }
+  window.clearFieldMemory = function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    IDS.forEach(function (id) { var el = document.getElementById(id); if (el) el.value = ''; });
+    if (window.disconnectSync) window.disconnectSync();
+    alert('已清除已记住的输入框内容，请重新填写。');
+  };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', function () { bind(); apply(); });
+  else { bind(); apply(); }
+})();
+</script>
 </body>
 </html>
