@@ -7565,8 +7565,8 @@ ${auto}
 
 <!-- 管理员登录门禁（应用层，先于其它脚本加载以拦截未授权访问） -->
 <script src="login.js"></script>
-<!-- Supabase 客户端（已加入离线缓存，首次加载后即可离线使用） -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Supabase 客户端（已本地化打包，不依赖外部 CDN，避免手机端 jsDelivr 被屏蔽） -->
+<script src="supabase-js.min.js"></script>
 <!-- 云端实时同步引擎 -->
 <script src="sync-engine.js"></script>
 </body>
