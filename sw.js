@@ -1,5 +1,5 @@
 /* Melva的个人计划 — Service Worker（离线缓存应用外壳，可安装为 App） */
-const CACHE_NAME = 'melva-plan-v7';
+const CACHE_NAME = 'melva-plan-v10';
 const PRECACHE = [
   './',
   'index.html',
