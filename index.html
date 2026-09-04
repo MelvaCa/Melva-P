@@ -4259,7 +4259,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         }, "删除口语/短语");
     }
 
-    function pushDailyEnglishContent() {
+    function pushDailyEnglishContent(silent) {
         const presets = [
             { title: 'Breaking News: Global E-Commerce Trends 2026', source: 'Breaking News English', link: 'https://breakingnewsenglish.com/', content: 'Listen to the level 6 audio news about current global trade innovations and cross-border logistics advancements.' },
             { title: '100 Word Story: The Rainy Afternoon', source: '100 Word Story', link: 'https://100wordstory.org/', content: 'A poignant 100-word tale about a forgotten letter found under an ancient piano. Excellent for concise vocabulary studying.' },
@@ -4280,6 +4280,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
             createdAt: new Date().toISOString()
         });
 
+        if (silent) { saveState(); return; }
         renderAll();
         showToast("已为你刷新推送到今日精选英语！✨");
     }
@@ -4321,7 +4322,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
     const EN_PHRASE_POOLS = { oral: EN_ORAL, phrase: EN_PHRASE };
 
     // 每日口语 / 短语：独立分栏推送，3-5 条，尽量不重复
-    function pushDailyPhrase(type) {
+    function pushDailyPhrase(type, silent) {
         const pool = (EN_PHRASE_POOLS[type] || EN_ORAL).slice();
         const recent = (state.englishPhrases || []).filter(p => p.type === type).slice(0, 40).map(p => p.scene || p.en);
         const fresh = pool.filter(p => !recent.includes(p.scene || p.en));
@@ -4335,6 +4336,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
             type: type, createdAt: new Date().toISOString()
         }, p)));
         saveState();
+        if (silent) return;
         renderEnglishPage();
         showToast((type === 'phrase' ? '📚 已推送 ' : '🗣️ 已推送 ') + picks.length + (type === 'phrase' ? ' 条短语搭配' : ' 个场景对话'));
     }
@@ -4972,8 +4974,8 @@ alter publication supabase_realtime add table life_os_sync;</div>
         // 年份/月份下拉
         const ySel = document.getElementById('moodCalYearSel');
         const mSel = document.getElementById('moodCalMonthSel');
-        const minDate = (state.diaries || []).reduce((min, d) => d.date < min ? d.date : min, `${moodCalYear}-${String(moodCalMonth).padStart(2,'0')}-01`);
-        let [my] = minDate.split('-').map(Number);
+        const minDate = (state.diaries || []).reduce((min, d) => (d.date && d.date < min) ? d.date : min, `${moodCalYear}-${String(moodCalMonth).padStart(2,'0')}-01`);
+        let [my] = String(minDate).split('-').map(Number);
         if (ySel) {
             let yOpts = '';
             for (let y = my; y <= now.getFullYear(); y++) yOpts += `<option value="${y}" ${y === moodCalYear ? 'selected' : ''}>${y}年</option>`;
@@ -4989,6 +4991,7 @@ alter publication supabase_realtime add table life_os_sync;</div>
         // 汇总该月每日心情（合并当天所有日记的 moods）
         const moodByDate = {};
         (state.diaries || []).forEach(d => {
+            if (!d.date) return; // 跳过缺日期的日记（兼容旧档/样例数据），避免渲染崩溃
             if (d.date.startsWith(`${moodCalYear}-${String(moodCalMonth).padStart(2,'0')}`)) {
                 const emos = (d.moods && d.moods.length) ? d.moods : (d.mood ? [d.mood] : []);
                 moodByDate[d.date] = (moodByDate[d.date] || []).concat(emos);
@@ -5568,7 +5571,7 @@ ${auto}
         showToast(labelMap[kind] + ' 已推送！✨');
     }
 
-    function pushDailyExpression() {
+    function pushDailyExpression(silent) {
         // 「一键推送今日精选话术」：依次触发所有推送主题各一条，统一显示；已推送过的（含本次已选）不再重复生成
         const recentTitles = (state.expressions || []).slice(0, 40).map(e => (e.title || '').trim());
         const pushedTitles = new Set(recentTitles); // 历史 + 本次已推，双重去重
@@ -5607,7 +5610,8 @@ ${auto}
             });
             added++;
         });
-        if (!added) { showToast('今日精选已全部推送过，暂无新内容～'); return; }
+        if (!added) { if (!silent) showToast('今日精选已全部推送过，暂无新内容～'); return; }
+        if (silent) { saveState(); return; }
         renderAll();
         showToast('⚡ 今日精选已全部推送（共 ' + added + ' 条）✨');
     }
@@ -7559,8 +7563,25 @@ ${auto}
         reader.readAsText(file);
     }
 
+    // 每日自动推送：仅在当天首次加载时静默生成当日推送内容（口语/短语/英语/话术），
+    // 让用户打开即看到「今日推送」，无需手动点击；按日期去重，每天仅生成一次。
+    function autoDailyPush() {
+        const today = getTodayStr();
+        if (state._lastAutoPushDate === today) return; // 当天已自动推送过
+        try {
+            pushDailyPhrase('oral', true);
+            pushDailyPhrase('phrase', true);
+            pushDailyEnglishContent(true);
+            pushDailyExpression(true);
+            state._lastAutoPushDate = today;
+            saveState();
+        } catch (e) { /* 自动推送失败不应影响主界面渲染 */ }
+    }
+
     window.onload = () => {
-        applyTheme(); tickLiveClock(); renderAll();
+        applyTheme(); tickLiveClock();
+        autoDailyPush();
+        renderAll();
         // 首页日期随实时时钟一起刷新（保证"展示时间"实时）
         setInterval(() => {
             const el = document.getElementById('homeDate');
