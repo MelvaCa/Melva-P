@@ -285,9 +285,6 @@
         .lp-pillar-slogan { font-size:11px; color:var(--text-muted); flex:1; }
         .lp-pillar-count { font-size:11px; font-weight:700; color:var(--accent-sage); background:var(--accent-sage-light,#eaf6ee); padding:2px 8px; border-radius:10px; }
         .lp-pillar-detail { padding:4px 14px 14px; border-top:1px solid var(--card-border); }
-        .lp-pillar-num { width:22px; height:22px; border-radius:50%; color:#fff; font-size:12px; font-weight:800; display:flex; align-items:center; justify-content:center; flex-shrink:0; box-shadow:0 1px 2px rgba(0,0,0,.15); }
-        .lp-pillar-summary .member-chevron { margin-left:auto; color:var(--text-muted); font-size:10px; transition:transform .15s; }
-        .lp-pillar[open] > .lp-pillar-summary .member-chevron { transform:rotate(90deg); }
         .lp-items { display:flex; flex-direction:column; gap:8px; margin-top:10px; }
         .lp-item { background:var(--bg-main); border:1px solid var(--card-border); border-radius:10px; padding:10px 12px; }
         .lp-item-head { display:flex; justify-content:space-between; align-items:center; gap:8px; }
@@ -1457,11 +1454,7 @@
             </div>
 
             <div style="display:flex; justify-content:space-between; align-items:center; margin:16px 2px 10px;">
-                <div style="font-size:15px; font-weight:800;">🧱 六大建设支柱</div>
-                <div style="display:flex; gap:6px;">
-                    <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="toggleAllPillars(true)">展开全部</button>
-                    <button class="btn btn-secondary" style="font-size:11px; padding:4px 10px;" onclick="toggleAllPillars(false)">收起全部</button>
-                </div>
+                <div style="font-size:15px; font-weight:800;">🧱 六大建设支柱（拖动卡片排序，点击展开增改）</div>
             </div>
 
             <div id="lifePlanPillars" class="lp-pillars"></div>
@@ -6397,10 +6390,6 @@ ${auto}
     // 编辑态：当前正在编辑的支柱条目
     let lpEditing = { pillarId: null, itemId: null };
 
-    // 六大建设支柱：模块编号与主题色（按顺序排列，强化"六大模块"视觉）
-    const PILLAR_NUMS = ['①', '②', '③', '④', '⑤', '⑥'];
-    const PILLAR_COLORS = ['#e23b3b', '#e8a33d', '#d9a441', '#4caf7d', '#3b82c4', '#8b6fc4'];
-
     function renderLifePlanPage() {
         const lp = state.lifePlan || (state.lifePlan = DEFAULT_STATE.lifePlan);
         const master = document.getElementById('lpMasterGoal');
@@ -6418,15 +6407,12 @@ ${auto}
             wrap.innerHTML = `<div style="font-size:12px; color:var(--text-muted); padding:12px;">还没有建设支柱，刷新或新增即可 🧱</div>`;
             return;
         }
-        pillars.forEach((p, idx) => {
-            const color = PILLAR_COLORS[idx % PILLAR_COLORS.length];
-            const num = PILLAR_NUMS[idx % PILLAR_NUMS.length];
+        pillars.forEach(p => {
             const card = document.createElement('details');
             card.className = 'lp-pillar sortable-item';
             card.setAttribute('draggable', 'false');
             card.dataset.id = p.id;
-            card.style.borderLeft = `3px solid ${color}`;
-            card.open = true;
+            card.open = false;
             const itemsHtml = (p.items && p.items.length) ? p.items.map(it => `
                 <div class="lp-item sortable-item" data-id="${it.id}" draggable="false">
                     <div class="lp-item-head">
@@ -6444,8 +6430,7 @@ ${auto}
 
             card.innerHTML = `
                 <summary class="lp-pillar-summary">
-                    <div class="lp-pillar-num" style="background:${color};">${num}</div>
-                    <div class="lp-pillar-name">${escapeHtml(p.name)}</div>
+                    <div class="lp-pillar-name">🧱 ${escapeHtml(p.name)}</div>
                     <div class="lp-pillar-slogan">${escapeHtml(p.slogan || '')}</div>
                     <span class="lp-pillar-count">${p.items ? p.items.length : 0} 项</span>
                     <span class="member-chevron">▶</span>
@@ -6468,11 +6453,6 @@ ${auto}
         });
         // 年度目标计划与完成情况
         renderLifePlanYears();
-    }
-
-    // 全部展开 / 收起六大支柱模块
-    function toggleAllPillars(expanded) {
-        document.querySelectorAll('#lifePlanPillars .lp-pillar').forEach(d => { d.open = !!expanded; });
     }
 
     function renderLifePlanYears() {
